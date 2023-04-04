@@ -9,8 +9,8 @@ pygame.display.set_caption('Matura-Projekt')
 class Background(pygame.sprite.Sprite):
     def __init__(self):
         self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Map"+s+"Map.png")
-        self.x=-4500
-        self.y=-4500
+        self.x=-2000
+        self.y=-2000
 
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
