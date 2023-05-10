@@ -19,20 +19,30 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Characters"+s+"Character 1_1.2 ohne Items.png")
         self.surf=pygame.transform.scale(self.surf, (125,125))
+        self.face="right"
 
     def print(self):
         screen.blit(self.surf, (438,438))
 
     def walk(self, key):
         if key=="w":
-            background.y+=10
+            if background.y<0:
+                background.y+=10
         if key=="s":
-            background.y-=10
+            if background.y>0:
+                background.y-=10
         if key=="a":
-            background.x+=10
+            if background.x<0:
+                background.x+=10
+                if self.face=="right":
+                    self.surf=pygame.transform.flip(self.surf, True, False)
+                    self.face="left"
         if key=="d":
-            background.x-=10
-        #print(str(background.x) + " and " + str(background.y))
+            if background.x>0:
+                background.x-=10
+                if self.face=="left":
+                    self.surf=pygame.transform.flip(self.surf, True, False)
+                    self.face="right"
 
 background = Background()
 player = Player()
