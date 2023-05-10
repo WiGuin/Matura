@@ -14,8 +14,8 @@ class Player (pygame.sprite.Sprite):
 class Sword(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
-		self.image = 
-		self.rect = 
+		self.image = # hier noch Bilddatei vom Schwert einfügen
+		self.rect = # hier noch rect machen
         def sword_input(self):
             keys = pygame.key.get_pressed()
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT and collisions(sword, 'enemy'): #hier für Gegner enemy als platzhalter verwendet
@@ -24,8 +24,8 @@ class Sword(pygame.sprite.Sprite):
 class Shield(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = 
-        self.rect = 
+        self.image = # hier noch Bilddatei vom Schild einfügen
+        self.rect = # hier noch rect machen
         shield_points = 10
         def shield_input(self):
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT and collision('enemy weapon', shield): # hier für Gegner Waffe auch Platzhalter verwendet
