@@ -29,7 +29,7 @@ class Player(pygame.sprite.Sprite):
             if background.y<0:
                 background.y+=10
         if key=="s":
-            if background.y>0:
+            if background.y>-5000:
                 background.y-=10
         if key=="a":
             if background.x<0:
@@ -38,7 +38,7 @@ class Player(pygame.sprite.Sprite):
                     self.surf=pygame.transform.flip(self.surf, True, False)
                     self.face="left"
         if key=="d":
-            if background.x>0:
+            if background.x>-5000:
                 background.x-=10
                 if self.face=="left":
                     self.surf=pygame.transform.flip(self.surf, True, False)
