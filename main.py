@@ -146,7 +146,7 @@ while gameon:
                 key='a'
             if event.key == K_d:
                 key='d'
-
+        
         if event.type == KEYUP:
             key=''
             player.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Characters"+s+"character1_0.png")
