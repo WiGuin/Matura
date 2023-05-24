@@ -6,8 +6,6 @@ s='\\'
 screen = pygame.display.set_mode((1000,1000))
 pygame.display.set_caption('Matura-Projekt')
 
-def is_input(key): #Zum Bestimmen ob gerade ein input durchgeführt wird
-    return(key!='')
 
 class Background(pygame.sprite.Sprite):
     def __init__(self):
@@ -24,6 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.surf=pygame.transform.scale(self.surf, (125,125))
         self.face="right"
         self.leg=10
+        self.health=10
 
     def print(self):
         screen.blit(self.surf, (438,438))
@@ -48,6 +47,9 @@ class Player(pygame.sprite.Sprite):
                     self.surf=pygame.transform.flip(self.surf, True, False)
                     self.face="right"
 
+    def is_input(self, key): #Zum Bestimmen ob gerade ein input durchgeführt wird
+        return(key!='')
+
     def walk_animation(self):
         if self.leg>=30:
             self.leg=10
@@ -60,8 +62,41 @@ class Player(pygame.sprite.Sprite):
             player.surf=pygame.transform.flip(player.surf, True, False)
         self.leg+=1
 
+class Enemy1(pygame.sprite.Sprite):
+    def __init__(self):
+        self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Goblin"+s+"Goblin00.png")
+        self.surf=pygame.transform.scale(self.surf, (75,75))
+        self.health=5
+        self.x=5
+        self.y=5
+
+    def print(self):
+        screen.blit(self.surf, (self.x,self.y))
+
+    def walk(self, key):
+        if 520>self.x:
+            self.x+=5
+        if 420<self.x:
+            self.x-=5
+        if 535>self.y:
+            self.y+=5
+        if 435<self.y:
+            self.y-=5
+        if key=='a':
+            self.x+=10
+        if key=='d':
+            self.x-=10
+        if key=='w':
+            self.y+=10
+        if key=='s':
+            self.y-=10
+
+
 background=Background()
 player=Player()
+
+enemy1=Enemy1()
+
 clock=pygame.time.Clock()
 
 menu=False #Für das Menü
@@ -72,9 +107,12 @@ while gameon:
     
     background.print()
     player.print()
-    if is_input(key):
+    if player.is_input(key):
         player.walk_animation() #Für die Geh-Animation
     player.walk(key) #Movement
+
+    enemy1.print()
+    enemy1.walk(key)
 
     for event in pygame.event.get():
 
