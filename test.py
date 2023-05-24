@@ -66,6 +66,8 @@ class Enemy1(pygame.sprite.Sprite):
     def __init__(self):
         self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Goblin"+s+"Goblin00.png")
         self.surf=pygame.transform.scale(self.surf, (75,75))
+        self.face='left'
+        self.leg=10
         self.health=5
         self.x=5
         self.y=5
@@ -91,6 +93,20 @@ class Enemy1(pygame.sprite.Sprite):
         if key=='s':
             self.y-=10
 
+    def walk_animation(self):
+            if 515>self.x:
+                self.face='right'
+            elif 425<self.x:
+                self.face='left'
+            if self.leg>=30:
+                self.leg=10
+            if self.leg<20:
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Goblin"+s+"Goblin_"+self.face+"_1.png")
+            else:
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Goblin"+s+"Goblin_"+self.face+"_2.png")
+            self.surf=pygame.transform.scale(self.surf, (75,75))
+            if 520<self.x or self.x<420 or 535<self.y or self.y<435:
+                self.leg+=1
 
 background=Background()
 player=Player()
@@ -113,6 +129,7 @@ while gameon:
 
     enemy1.print()
     enemy1.walk(key)
+    enemy1.walk_animation()
 
     for event in pygame.event.get():
 
