@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         screen.blit(self.surf, (438,438))
 
     def walk(self, key):
-        if key=="w":
+        if key=="w" or key=="wad" or key=="wda" or key=="awd" or key=="adw" or key=="daw" or key=="dwa":
             if background.y<0:
                 background.y+=10
         elif key=="wa" or key=="aw":
@@ -50,9 +50,9 @@ class Player(pygame.sprite.Sprite):
                 if self.face=="left":
                     self.surf=pygame.transform.flip(self.surf, True, False)
                     self.face="right"
-        elif key=="s":
+        elif key=="s" or key=="sad" or key=="sda" or key=="asd" or key=="ads" or key=="das" or key=="dsa":
             if background.y>-4000:
-                background.y-=7
+                background.y-=10
         elif key=="sa" or key=="as":
             if background.y>-4000:
                 background.y-=7
@@ -123,7 +123,7 @@ class Enemy1(pygame.sprite.Sprite):
             self.x+=10
         if key=='d':
             self.x-=10
-        if key=='w':
+        if key=="w" or key=="wad" or key=="wda" or key=="awd" or key=="adw" or key=="daw" or key=="dwa":
             self.y+=10
         if key=='wa' or key=='aw':
             self.y+=7
@@ -131,7 +131,7 @@ class Enemy1(pygame.sprite.Sprite):
         if key=='wd' or key=='dw':
             self.y+=7
             self.x-=7
-        if key=='s':
+        if key=="s" or key=="sad" or key=="sda" or key=="asd" or key=="ads" or key=="das" or key=="dsa":
             self.y-=10
         if key=='sa' or key=='as':
             self.y-=7
