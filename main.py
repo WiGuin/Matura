@@ -178,8 +178,6 @@ while gameon:
     enemy1.walk(key)
     enemy1.walk_animation()
 
-    print(key_input(key, 'd'))
-
     if key=='':
         player.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Characters"+s+"character1_0.png")
         player.surf=pygame.transform.scale(player.surf, (125,125))
