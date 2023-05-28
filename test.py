@@ -6,6 +6,9 @@ s='\\'
 screen = pygame.display.set_mode((1000,1000))
 pygame.display.set_caption('Matura-Projekt')
 
+def key_input(key, search):
+    key = key.replace(search, '')
+    return key
 
 class Background(pygame.sprite.Sprite):
     def __init__(self):
@@ -31,9 +34,41 @@ class Player(pygame.sprite.Sprite):
         if key=="w":
             if background.y<0:
                 background.y+=10
+        elif key=="wa" or key=="aw":
+            if background.y<0:
+                background.y+=7
+            if background.x<0:
+                background.x+=7
+                if self.face=="right":
+                    self.surf=pygame.transform.flip(self.surf, True, False)
+                    self.face="left"
+        elif key=="wd" or key=="dw":
+            if background.y<0:
+                background.y+=7
+            if background.x>-4000:
+                background.x-=7
+                if self.face=="left":
+                    self.surf=pygame.transform.flip(self.surf, True, False)
+                    self.face="right"
         elif key=="s":
             if background.y>-4000:
-                background.y-=10
+                background.y-=7
+        elif key=="sa" or key=="as":
+            if background.y>-4000:
+                background.y-=7
+            if background.x<0:
+                background.x+=7
+                if self.face=="right":
+                    self.surf=pygame.transform.flip(self.surf, True, False)
+                    self.face="left"
+        elif key=="sd" or key=="ds":
+            if background.y>-4000:
+                background.y-=7
+            if background.x>-4000:
+                background.x-=7
+                if self.face=="left":
+                    self.surf=pygame.transform.flip(self.surf, True, False)
+                    self.face="right"
         elif key=="a":
             if background.x<0:
                 background.x+=10
@@ -90,8 +125,20 @@ class Enemy1(pygame.sprite.Sprite):
             self.x-=10
         if key=='w':
             self.y+=10
+        if key=='wa' or key=='aw':
+            self.y+=7
+            self.x+=7
+        if key=='wd' or key=='dw':
+            self.y+=7
+            self.x-=7
         if key=='s':
             self.y-=10
+        if key=='sa' or key=='as':
+            self.y-=7
+            self.x+=7
+        if key=='sd' or key=='ds':
+            self.y-=7
+            self.x-=7
 
     def walk_animation(self):
             if 515>self.x:
@@ -131,6 +178,14 @@ while gameon:
     enemy1.walk(key)
     enemy1.walk_animation()
 
+    print(key_input(key, 'd'))
+
+    if key=='':
+        player.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Characters"+s+"character1_0.png")
+        player.surf=pygame.transform.scale(player.surf, (125,125))
+        if player.face=="left":
+            player.surf=pygame.transform.flip(player.surf, True, False)
+
     for event in pygame.event.get():
 
         if event.type == KEYDOWN:
@@ -138,20 +193,23 @@ while gameon:
                 menu=True
 
             if event.key == K_w:
-                key='w'
+                key+='w'
             if event.key == K_s:
-                key='s'
+                key+='s'
             if event.key == K_a:
-                key='a'
+                key+='a'
             if event.key == K_d:
-                key='d'
+                key+='d'
 
         if event.type == KEYUP:
-            key=''
-            player.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Characters"+s+"character1_0.png")
-            player.surf=pygame.transform.scale(player.surf, (125,125))
-            if player.face=="left":
-                player.surf=pygame.transform.flip(player.surf, True, False)
+            if event.key == K_w:
+                key=key_input(key, 'w')
+            if event.key == K_s:
+                key=key_input(key, 's')
+            if event.key == K_a:
+                key=key_input(key, 'a')
+            if event.key == K_d:
+                key=key_input(key, 'd')
 
         elif event.type == QUIT:
             gameon=False
