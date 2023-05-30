@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Characters"+s+"character1_0.png")
         self.surf=pygame.transform.scale(self.surf, (125,125))
         self.face="right"
-        self.leg=10
+        self.leg=10 #Für die Walking-Animation
         self.health=10
 
     def print(self):
@@ -94,30 +94,32 @@ class Player(pygame.sprite.Sprite):
             self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Characters"+s+"character1_2.png")
         self.surf=pygame.transform.scale(self.surf, (125,125))
         if self.face=="left":
-            player.surf=pygame.transform.flip(player.surf, True, False)
+            self.surf=pygame.transform.flip(self.surf, True, False)
         self.leg+=1
 
 class Enemy1(pygame.sprite.Sprite):
     def __init__(self):
-        self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Goblin"+s+"Goblin00.png")
+        self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Goblin"+s+"Goblin_1.png")
         self.surf=pygame.transform.scale(self.surf, (75,75))
         self.face='left'
-        self.leg=10
+        self.leg=0 #Für die Walking-animation
+        self.arm=20 #Für die Attacken
+        self.attack_clock=0 #Für die Attack-animation
         self.health=5
-        self.x=5
-        self.y=5
+        self.x=750
+        self.y=100
 
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
 
     def walk(self, key):
-        if 520>self.x:
+        if 530>self.x:
             self.x+=5
-        if 420<self.x:
+        if 405<self.x:
             self.x-=5
-        if 535>self.y:
+        if 545>self.y:
             self.y+=5
-        if 435<self.y:
+        if 375<self.y:
             self.y-=5
         if key=='a':
             self.x+=10
@@ -141,42 +143,71 @@ class Enemy1(pygame.sprite.Sprite):
             self.x-=7
 
     def walk_animation(self):
-            if 515>self.x:
-                self.face='right'
-            elif 425<self.x:
-                self.face='left'
-            if self.leg>=30:
-                self.leg=10
-            if self.leg<20:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Goblin"+s+"Goblin_"+self.face+"_1.png")
+        if 460>self.x:
+            self.face='right'
+        else:
+            self.face='left'
+        if self.leg>=20:
+            self.leg=0
+        if self.leg<10:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Goblin"+s+"Goblin_1.png")
+        else:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Goblin"+s+"Goblin_2.png")
+        if self.face=="right":
+            self.surf=pygame.transform.flip(self.surf, True, False)
+        self.surf=pygame.transform.scale(self.surf, (75,75))
+        self.leg+=1
+
+    def attack(self, player_health):
+        if 530>self.x and self.x>400 and 545>self.y and self.y>370:
+            if self.arm>=30:
+                self.arm=0
+                player_health-=1
+                print(player_health)
+            self.arm+=1
+        else:
+            self.arm=20
+        return(player_health)
+        
+    def attack_animation(self):
+        if 530>self.x and self.x>400 and 545>self.y and self.y>370:
+            if self.attack_clock>=60:
+                self.attack_clock=0
+            if self.attack_clock<30:
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Goblin"+s+"Goblin_attack_1.png")
             else:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Goblin"+s+"Goblin_"+self.face+"_2.png")
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Goblin"+s+"Goblin_attack_2.png")
+            if self.face=="right":
+                self.surf=pygame.transform.flip(self.surf, True, False)
             self.surf=pygame.transform.scale(self.surf, (75,75))
-            if 520<self.x or self.x<420 or 535<self.y or self.y<435:
-                self.leg+=1
+            self.attack_clock+=1
+
 
 background=Background()
+
 player=Player()
 
 enemy1=Enemy1()
 
 clock=pygame.time.Clock()
-
 menu=False #Für das Menü
 gameon=True #Für den Game-Loop
 key='' #Für die Inputs
 
 while gameon:
-    
+
     background.print()
+
     player.print()
     if player.is_input(key):
-        player.walk_animation() #Für die Geh-Animation
-    player.walk(key) #Movement
-
+        player.walk_animation()
+    player.walk(key)
+    
     enemy1.print()
     enemy1.walk(key)
     enemy1.walk_animation()
+    player.health=enemy1.attack(player.health)
+    enemy1.attack_animation()
 
     if key=='':
         player.surf=pygame.image.load(os.path.dirname(__file__)+s+"textures"+s+"Characters"+s+"character1_0.png")
