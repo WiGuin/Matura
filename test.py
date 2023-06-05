@@ -6,6 +6,7 @@ s='\\'
 screen = pygame.display.set_mode((1000,1000))
 pygame.display.set_caption('Matura-Projekt')
 
+#Zum Entfernen von Buchstaben von "key"
 def key_input(key, search):
     key = key.replace(search, '')
     return key
@@ -21,17 +22,19 @@ class Background(pygame.sprite.Sprite):
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
-        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_0.png')
-        self.surf=pygame.transform.scale(self.surf, (125,125))
         self.face='right'
         self.leg=10 #Für die Walking-Animation
         self.health=10
         self.arm=0
         self.is_attacking=False
-        self.inventory=['','']
+        self.inventory=['1','']
+        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_0.png')
+        self.surf=pygame.transform.scale(self.surf, (125,125))
+        self.x=438
+        self.y=438
 
     def print(self):
-        screen.blit(self.surf, (438,438))
+        screen.blit(self.surf, (self.x,self.y))
 
     def walk(self, key):
         if key=='w' or key=='wad' or key=='wda' or key=='awd' or key=='adw' or key=='daw' or key=='dwa':
@@ -72,13 +75,13 @@ class Player(pygame.sprite.Sprite):
                 if self.face=='left':
                     self.surf=pygame.transform.flip(self.surf, True, False)
                     self.face='right'
-        elif key=='a':
+        elif key=='a' or key=='aws' or key=='asw' or key=='was' or key=='wsa' or key=='saw' or key=='swa':
             if background.x<0:
                 background.x+=10
                 if self.face=='right':
                     self.surf=pygame.transform.flip(self.surf, True, False)
                     self.face='left'
-        elif key=='d':
+        elif key=='d' or key=='dws' or key=='dsw' or key=='wds' or key=='wsd' or key=='sdw' or key=='swd':
             if background.x>-4000:
                 background.x-=10
                 if self.face=='left':
@@ -92,9 +95,9 @@ class Player(pygame.sprite.Sprite):
         if self.leg>=30:
             self.leg=10
         if self.leg<20:
-            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_1.png')
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_1.png')
         else:
-            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_2.png')
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_2.png')
         self.surf=pygame.transform.scale(self.surf, (125,125))
         if self.face=='left':
             self.surf=pygame.transform.flip(self.surf, True, False)
@@ -105,18 +108,33 @@ class Player(pygame.sprite.Sprite):
             self.arm=0
         if self.arm==0:
             if self.face=='right':
-                if x+37>=500:
-                    if ((x-500)**2+(y-500)**2)**0.5<180:
-                        enemy_health-=1
+                if x+37>=500 and y<=500 and abs(x-500)<108:
+                    enemy_health-=1
             if self.face=='left':
-                if x+37<=500:
-                    if ((x-500)**2+(y-500)**2)**0.5<180:
-                        enemy_health-=1
+                if x+37<=500 and y<=500 and abs(x-500)<108:
+                    enemy_health-=1
         self.arm+=1
         return enemy_health
     
     def attack_animation(self):
-        print()
+        if 25<self.arm<30:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_attack_0.png')
+            self.surf=pygame.transform.scale(self.surf, (125,125))
+            self.x=438
+            if self.face=='left':
+                self.surf=pygame.transform.flip(self.surf, True, False)
+        elif self.arm==29 or self.arm<5:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_attack_1.png')
+            self.surf=pygame.transform.scale(self.surf, (229,125))
+            self.x=386
+            if self.face=='left':
+                self.surf=pygame.transform.flip(self.surf, True, False)
+        else:
+            player.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+player.inventory[0]+'_0.png')
+            player.surf=pygame.transform.scale(player.surf, (125,125))
+            if player.face=='left':
+                player.surf=pygame.transform.flip(player.surf, True, False)
+            self.x=438
 
 class Enemy1(pygame.sprite.Sprite):
     def __init__(self):
@@ -133,7 +151,7 @@ class Enemy1(pygame.sprite.Sprite):
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
 
-    def walk(self, key):
+    def walk(self, key, x, y):
         if 530>self.x:
             self.x+=5
         if 405<self.x:
@@ -142,26 +160,34 @@ class Enemy1(pygame.sprite.Sprite):
             self.y+=5
         if 375<self.y:
             self.y-=5
-        if key=='a':
-            self.x+=10
-        if key=='d':
-            self.x-=10
+        if key=='a' or key=='aws' or key=='asw' or key=='was' or key=='wsa' or key=='saw' or key=='swa':
+            if x<0:
+                self.x+=10
+        if key=='d' or key=='dws' or key=='dsw' or key=='wds' or key=='wsd' or key=='sdw' or key=='swd':
+            if x>-4000:
+                self.x-=10
         if key=='w' or key=='wad' or key=='wda' or key=='awd' or key=='adw' or key=='daw' or key=='dwa':
-            self.y+=10
+            if y<0:
+                self.y+=10
         if key=='wa' or key=='aw':
-            self.y+=7
-            self.x+=7
+            if x<0 and y<0:
+                self.y+=50**0.5
+                self.x+=50**0.5
         if key=='wd' or key=='dw':
-            self.y+=7
-            self.x-=7
+            if x>-4000 and y<0:
+                self.y+=50**0.5
+                self.x-=50**0.5
         if key=='s' or key=='sad' or key=='sda' or key=='asd' or key=='ads' or key=='das' or key=='dsa':
-            self.y-=10
+            if y>-4000:
+                self.y-=10
         if key=='sa' or key=='as':
-            self.y-=7
-            self.x+=7
+            if x<0 and y>-4000:
+                self.y-=50**0.5
+                self.x+=50**0.5
         if key=='sd' or key=='ds':
-            self.y-=7
-            self.x-=7
+            if x>-4000 and y>-4000:
+                self.y-=50**0.5
+                self.x-=50**0.5
 
     def walk_animation(self):
         if 460>self.x:
@@ -184,7 +210,6 @@ class Enemy1(pygame.sprite.Sprite):
             if self.arm>=30:
                 self.arm=0
                 player_health-=1
-                print(player_health)
             self.arm+=1
         else:
             self.arm=20
@@ -221,12 +246,18 @@ while gameon:
     player.print()
     if player.is_input(key):
         player.walk_animation()
-    player.walk(key)
-    if player.is_attacking:
+        player.walk(key)
+    elif player.is_attacking:
         enemy1.health=player.attack(enemy1.x, enemy1.y, enemy1.health)
-    
+        player.attack_animation()
+    elif key=='' and player.is_attacking==False:
+        player.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+player.inventory[0]+'_0.png')
+        player.surf=pygame.transform.scale(player.surf, (125,125))
+        if player.face=='left':
+            player.surf=pygame.transform.flip(player.surf, True, False)
+
     enemy1.print()
-    enemy1.walk(key)
+    enemy1.walk(key, background.x, background.y)
     enemy1.walk_animation()
     player.health=enemy1.attack(player.health)
     enemy1.attack_animation()
@@ -234,12 +265,6 @@ while gameon:
         enemy1.x=300
         enemy1.y=-100
         enemy1.health=5
-
-    if key=='':
-        player.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_0.png')
-        player.surf=pygame.transform.scale(player.surf, (125,125))
-        if player.face=='left':
-            player.surf=pygame.transform.flip(player.surf, True, False)
 
     for event in pygame.event.get():
 
