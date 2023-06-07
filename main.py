@@ -199,9 +199,9 @@ class Enemy1(pygame.sprite.Sprite):
                 self.y-=10
         if key=='sa' or key=='as':
             if x<0:
-                self.y-=50**0.5
-            if y>-4000:
                 self.x+=50**0.5
+            if y>-4000:
+                self.y-=50**0.5
         if key=='sd' or key=='ds':
             if x>-4000:
                 self.x-=50**0.5
