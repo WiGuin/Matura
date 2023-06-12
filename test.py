@@ -7,7 +7,7 @@ screen = pygame.display.set_mode((1000,1000))
 pygame.display.set_caption('Matura-Projekt')
 
 #Zum Entfernen von Buchstaben von "key"
-def key_input(key, search):
+def key_not_input(key, search):
     key = key.replace(search, '')
     return key
 
@@ -32,9 +32,11 @@ class Player(pygame.sprite.Sprite):
         self.surf=pygame.transform.scale(self.surf, (125,125))
         self.x=438
         self.y=438
+        self.font=pygame.font.Font('freesansbold.ttf', 32)
 
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
+        screen.blit(self.font.render('HP: '+str(self.health), True, (255,255,255)), (5,5))
 
     def walk(self, key):
         if key=='w' or key=='wad' or key=='wda' or key=='awd' or key=='adw' or key=='daw' or key=='dwa':
@@ -91,12 +93,25 @@ class Player(pygame.sprite.Sprite):
     def is_input(self, key): #Zum Bestimmen ob gerade ein input durchgeführt wird
         return(key!='')
 
-    def walk_animation(self):
-        if self.is_attacking:
+    def attack(self, x, y, enemy_health):
+        if self.arm>=30:
+            self.arm=0
+        if self.arm==0:
+            if self.face=='right':
+                if x+37>=500 and y<=500 and abs(x-500)<108:
+                    enemy_health-=1
+            if self.face=='left':
+                if x+37<=500 and y<=500 and abs(x-500)<108:
+                    enemy_health-=1
+        self.arm+=1
+        return enemy_health
+
+    def animation(self, key):
+        if self.is_attacking and key!='':
             if self.leg>=30:
                 self.leg=10
             if self.leg<20:
-                if self.arm==29 or self.arm<5:
+                if self.arm>=29 or self.arm<5:
                     self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_1_attack_1.png')
                     self.surf=pygame.transform.scale(self.surf, (229,125))
                     self.x=386
@@ -113,7 +128,7 @@ class Player(pygame.sprite.Sprite):
                     self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_2_attack_0.png')
                     self.surf=pygame.transform.scale(self.surf, (125,125))
                     self.x=438
-        else:
+        elif key!='':
             if self.leg>=30:
                 self.leg=10
             if self.leg<20:
@@ -122,34 +137,22 @@ class Player(pygame.sprite.Sprite):
                 self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_2.png')
             self.surf=pygame.transform.scale(self.surf, (125,125))
             self.x=438
-        if self.face=='left':
-            self.surf=pygame.transform.flip(self.surf, True, False)
-        self.leg+=1
-
-    def attack(self, x, y, enemy_health):
-        if self.arm>=30:
-            self.arm=0
-        if self.arm==0:
-            if self.face=='right':
-                if x+37>=500 and y<=500 and abs(x-500)<108:
-                    enemy_health-=1
-            if self.face=='left':
-                if x+37<=500 and y<=500 and abs(x-500)<108:
-                    enemy_health-=1
-        self.arm+=1
-        return enemy_health
-    
-    def attack_animation(self):
-        if self.arm==29 or self.arm<5:
-            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_0_attack_1.png')
-            self.surf=pygame.transform.scale(self.surf, (229,125))
-            self.x=386
-        else:
-            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_0_attack_0.png')
+        elif self.is_attacking:
+            if self.arm>=29 or self.arm<5:
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_0_attack_1.png')
+                self.surf=pygame.transform.scale(self.surf, (229,125))
+                self.x=386
+            else:
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_0_attack_0.png')
+                self.surf=pygame.transform.scale(self.surf, (125,125))
+                self.x=438
+        elif key=='' and self.is_attacking==False:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+player.inventory[0]+'_0.png')
             self.surf=pygame.transform.scale(self.surf, (125,125))
             self.x=438
         if self.face=='left':
             self.surf=pygame.transform.flip(self.surf, True, False)
+        self.leg+=1
 
 class Enemy1(pygame.sprite.Sprite):
     def __init__(self):
@@ -255,27 +258,19 @@ player=Player()
 enemy1=Enemy1()
 
 clock=pygame.time.Clock()
-gameon=True #Für den Game-Loop
 key='' #Für die Inputs
 
-while gameon:
+while player.health>0:
 
     background.print()
 
     player.print()
-    if player.is_input(key):
-        player.walk_animation()
-        player.walk(key)
-    elif player.is_attacking:
-        player.attack_animation()
+    player.walk(key)
+    player.animation(key)
+    if player.is_attacking:
         enemy1.health=player.attack(enemy1.x, enemy1.y, enemy1.health)
     else:
         player.arm=5
-    if key=='' and player.is_attacking==False:
-        player.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+player.inventory[0]+'_0.png')
-        player.surf=pygame.transform.scale(player.surf, (125,125))
-        if player.face=='left':
-            player.surf=pygame.transform.flip(player.surf, True, False)
 
     enemy1.print()
     enemy1.walk(key, background.x, background.y)
@@ -302,16 +297,16 @@ while gameon:
 
         if event.type == KEYUP:
             if event.key == K_w:
-                key=key_input(key, 'w')
+                key=key_not_input(key, 'w')
             if event.key == K_s:
-                key=key_input(key, 's')
+                key=key_not_input(key, 's')
             if event.key == K_a:
-                key=key_input(key, 'a')
+                key=key_not_input(key, 'a')
             if event.key == K_d:
-                key=key_input(key, 'd')
+                key=key_not_input(key, 'd')
 
         elif event.type == QUIT:
-            gameon=False
+            player.health=False
 
         if pygame.mouse.get_pressed()[0]:
             player.is_attacking=True
