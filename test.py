@@ -305,7 +305,7 @@ while player.health>0:
             if event.key == K_d:
                 key=key_not_input(key, 'd')
 
-        elif event.type == QUIT:
+        if event.type == QUIT:
             player.health=False
 
         if pygame.mouse.get_pressed()[0]:
