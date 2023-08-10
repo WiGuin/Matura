@@ -36,7 +36,7 @@ class Player(pygame.sprite.Sprite):
 
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
-        screen.blit(self.font.render('HP: '+str(self.health), True, (255,255,255)), (5,105))
+        screen.blit(self.font.render('HP: '+str(self.health), True, (255,255,255)), (5,5))
 
     def walk(self, key):
         if key=='w' or key=='wad' or key=='wda' or key=='awd' or key=='adw' or key=='daw' or key=='dwa':
