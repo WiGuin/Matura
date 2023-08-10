@@ -306,7 +306,7 @@ while player.health>0:
                 key=key_not_input(key, 'd')
 
         if event.type == QUIT:
-            player.health=False
+            player.health=0
 
         if pygame.mouse.get_pressed()[0]:
             player.is_attacking=True
