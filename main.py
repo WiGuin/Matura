@@ -109,11 +109,13 @@ class Player(pygame.sprite.Sprite):
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
-                    if x>=410 and y<=400 and abs(x-500)<108:
+                    if 400<x<670 and y<=400:
                         enemy_health-=1
+                        print("HIT")
                 if self.face=='left':
-                    if x<=410 and y<=500 and abs(x-500)<108:
+                    if 320<x<470 and y<=500:
                         enemy_health-=1
+                        print("HIT")
         if type=='20':
             if self.arm>=30:
                 self.arm=0
@@ -420,13 +422,13 @@ while player.health>0:
     #    enemy1.y=-100
     #    enemy1.health=5
 
-    #if boss1.health>0:
-    #    boss1.print()
-    #    boss1.walk(key, background.x, background.y)
+    if boss1.health>0:
+        boss1.print()
+        boss1.walk(key, background.x, background.y)
 
-    if boss2.health>0:
-        boss2.print()
-        boss2.walk(key, background.x, background.y)
+    #if boss2.health>0:
+    #    boss2.print()
+    #    boss2.walk(key, background.x, background.y)
 
     for event in pygame.event.get():
 
