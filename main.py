@@ -109,22 +109,20 @@ class Player(pygame.sprite.Sprite):
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
-                    if 400<x<670 and y<=400:
+                    if 350<x<595 and 170<y<500:
                         enemy_health-=1
-                        print("HIT")
                 if self.face=='left':
-                    if 320<x<470 and y<=500:
+                    if 225<x<470 and 170<y<500:
                         enemy_health-=1
-                        print("HIT")
         if type=='20':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
-                    if x>=410 and y<=400 and abs(x-500)<108:
+                    if 260<x<620 and 165<y<500:
                         enemy_health-=1
                 if self.face=='left':
-                    if x<=410 and y<=500 and abs(x-500)<108:
+                    if 150<x<520 and 165<y<500:
                         enemy_health-=1
         return enemy_health
 
@@ -412,23 +410,23 @@ while player.health>0:
     else:
         player.arm=5
 
-    #enemy1.print()
-    #enemy1.walk(key, background.x, background.y)
-    #enemy1.walk_animation()
-    #player.health=enemy1.attack(player.health)
-    #enemy1.attack_animation()
-    #if enemy1.health<=0:
-    #    enemy1.x=300
-    #    enemy1.y=-100
-    #    enemy1.health=5
+    enemy1.print()
+    enemy1.walk(key, background.x, background.y)
+    enemy1.walk_animation()
+    player.health=enemy1.attack(player.health)
+    enemy1.attack_animation()
+    if enemy1.health<=0:
+        enemy1.x=300
+        enemy1.y=-100
+        enemy1.health=5
 
     if boss1.health>0:
         boss1.print()
         boss1.walk(key, background.x, background.y)
 
-    #if boss2.health>0:
-    #    boss2.print()
-    #    boss2.walk(key, background.x, background.y)
+    if boss2.health>0:
+        boss2.print()
+        boss2.walk(key, background.x, background.y)
 
     for event in pygame.event.get():
 
