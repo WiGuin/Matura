@@ -326,6 +326,21 @@ class Boss1(pygame.sprite.Sprite):
             if y>-4000:
                 self.y-=50**0.5
 
+    def walk_animation(self):
+        if 410>self.x:
+            self.face='right'
+        else:
+            self.face='left'
+        if self.leg>=40:
+            self.leg=0
+        if self.leg<20:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner1_Walk1.png')
+        else:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner1_Walk2.png')
+        if self.face=='left':
+            self.surf=pygame.transform.flip(self.surf, True, False)
+        self.leg+=1
+
 class Boss2(pygame.sprite.Sprite):
     def __init__(self):
         self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner2.png')
@@ -420,13 +435,14 @@ while player.health>0:
         enemy1.y=-100
         enemy1.health=5
 
-    if boss1.health>0:
-        boss1.print()
-        boss1.walk(key, background.x, background.y)
+    #if boss1.health>0:
+    #    boss1.print()
+    #    boss1.walk(key, background.x, background.y)
+    #    boss1.walk_animation()
 
-    if boss2.health>0:
-        boss2.print()
-        boss2.walk(key, background.x, background.y)
+    #if boss2.health>0:
+    #    boss2.print()
+    #    boss2.walk(key, background.x, background.y)
 
     for event in pygame.event.get():
 

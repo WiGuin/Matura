@@ -93,17 +93,37 @@ class Player(pygame.sprite.Sprite):
     def is_input(self, key): #Zum Bestimmen ob gerade ein input durchgeführt wird
         return(key!='')
 
-    def attack(self, x, y, enemy_health):
-        if self.arm>=30:
-            self.arm=0
-        if self.arm==0:
-            if self.face=='right':
-                if x+37>=500 and y<=500 and abs(x-500)<108:
-                    enemy_health-=1
-            if self.face=='left':
-                if x+37<=500 and y<=500 and abs(x-500)<108:
-                    enemy_health-=1
-        self.arm+=1
+    def attack(self, x, y, enemy_health, type):
+        if type=='1':
+            if self.arm>=30:
+                self.arm=0
+            if self.arm==0:
+                if self.face=='right':
+                    if 463<x<608 and 360<y<500:
+                        enemy_health-=1
+                if self.face=='left':
+                    if 392<x<510 and 360<y<500:
+                        enemy_health-=1
+        if type=='10':
+            if self.arm>=30:
+                self.arm=0
+            if self.arm==0:
+                if self.face=='right':
+                    if 350<x<595 and 170<y<500:
+                        enemy_health-=1
+                if self.face=='left':
+                    if 225<x<470 and 170<y<500:
+                        enemy_health-=1
+        if type=='20':
+            if self.arm>=30:
+                self.arm=0
+            if self.arm==0:
+                if self.face=='right':
+                    if 260<x<620 and 165<y<500:
+                        enemy_health-=1
+                if self.face=='left':
+                    if 150<x<520 and 165<y<500:
+                        enemy_health-=1
         return enemy_health
 
     def animation(self, key):
@@ -250,12 +270,142 @@ class Enemy1(pygame.sprite.Sprite):
             self.surf=pygame.transform.scale(self.surf, (75,75))
             self.attack_clock+=1
 
+class Boss1(pygame.sprite.Sprite):
+    def __init__(self):
+        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner1.png')
+        self.health=15
+        self.face='right'
+        self.leg=0
+        self.arm=0
+        self.attack_clock=0
+        self.x=410
+        self.y=300
+    
+    def print(self):
+        screen.blit(self.surf, (self.x,self.y))
+
+    def walk(self, key, x, y):
+        if 10<self.x<260 or 410<self.x<560:
+            self.x-=2
+        if 560<self.x<810 or 260<self.x<410:
+            self.x+=2
+        if 0<self.y<200 or 300<self.y<400:
+            self.y-=2
+        if 400<self.y<700 or 200<self.y<300:
+            self.y+=2
+        if key=='a' or key=='aws' or key=='asw' or key=='was' or key=='wsa' or key=='saw' or key=='swa':
+            if x<0:
+                self.x+=10
+        if key=='d' or key=='dws' or key=='dsw' or key=='wds' or key=='wsd' or key=='sdw' or key=='swd':
+            if x>-4000:
+                self.x-=10
+        if key=='w' or key=='wad' or key=='wda' or key=='awd' or key=='adw' or key=='daw' or key=='dwa':
+            if y<0:
+                self.y+=10
+        if key=='wa' or key=='aw':
+            if x<0:
+                self.x+=50**0.5
+            if y<0:
+                self.y+=50**0.5
+        if key=='wd' or key=='dw':
+            if x>-4000:
+                self.x-=50**0.5
+            if y<0:
+                self.y+=50**0.5
+        if key=='s' or key=='sad' or key=='sda' or key=='asd' or key=='ads' or key=='das' or key=='dsa':
+            if y>-4000:
+                self.y-=10
+        if key=='sa' or key=='as':
+            if x<0:
+                self.x+=50**0.5
+            if y>-4000:
+                self.y-=50**0.5
+        if key=='sd' or key=='ds':
+            if x>-4000:
+                self.x-=50**0.5
+            if y>-4000:
+                self.y-=50**0.5
+
+    def walk_animation(self):
+        if 410>self.x:
+            self.face='right'
+        else:
+            self.face='left'
+        if self.leg>=40:
+            self.leg=0
+        if self.leg<20:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner1_Walk1.png')
+        else:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner1_Walk2.png')
+        if self.face=='left':
+            self.surf=pygame.transform.flip(self.surf, True, False)
+        self.leg+=1
+
+class Boss2(pygame.sprite.Sprite):
+    def __init__(self):
+        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner2.png')
+        self.health=15
+        self.face='center'
+        self.leg=0
+        self.arm=0
+        self.attack_clock=0
+        self.x=365
+        self.y=290
+    
+    def print(self):
+        screen.blit(self.surf, (self.x,self.y))
+
+    def walk(self, key, x, y):
+        if 10<self.x<365 or 720<self.x:
+            self.x-=2
+        if 365<self.x<990 or self.x<0:
+            self.x+=2
+        if 10<self.y<290:
+            self.y-=2
+        if 290<self.y<710:
+            self.y+=2
+        if key=='a' or key=='aws' or key=='asw' or key=='was' or key=='wsa' or key=='saw' or key=='swa':
+            if x<0:
+                self.x+=10
+        if key=='d' or key=='dws' or key=='dsw' or key=='wds' or key=='wsd' or key=='sdw' or key=='swd':
+            if x>-4000:
+                self.x-=10
+        if key=='w' or key=='wad' or key=='wda' or key=='awd' or key=='adw' or key=='daw' or key=='dwa':
+            if y<0:
+                self.y+=10
+        if key=='wa' or key=='aw':
+            if x<0:
+                self.x+=50**0.5
+            if y<0:
+                self.y+=50**0.5
+        if key=='wd' or key=='dw':
+            if x>-4000:
+                self.x-=50**0.5
+            if y<0:
+                self.y+=50**0.5
+        if key=='s' or key=='sad' or key=='sda' or key=='asd' or key=='ads' or key=='das' or key=='dsa':
+            if y>-4000:
+                self.y-=10
+        if key=='sa' or key=='as':
+            if x<0:
+                self.x+=50**0.5
+            if y>-4000:
+                self.y-=50**0.5
+        if key=='sd' or key=='ds':
+            if x>-4000:
+                self.x-=50**0.5
+            if y>-4000:
+                self.y-=50**0.5
+
 
 background=Background()
 
 player=Player()
 
 enemy1=Enemy1()
+
+boss1=Boss1()
+boss2=Boss2()
 
 clock=pygame.time.Clock()
 key='' #Für die Inputs
@@ -268,7 +418,10 @@ while player.health>0:
     player.walk(key)
     player.animation(key)
     if player.is_attacking:
-        enemy1.health=player.attack(enemy1.x, enemy1.y, enemy1.health)
+        player.arm+=1
+        boss1.health=player.attack(boss1.x, boss1.y, boss1.health, '10')
+        boss1.health=player.attack(boss2.x, boss2.y, boss2.health, '20')
+        enemy1.health=player.attack(enemy1.x, enemy1.y, enemy1.health, '1')
     else:
         player.arm=5
 
@@ -281,6 +434,15 @@ while player.health>0:
         enemy1.x=300
         enemy1.y=-100
         enemy1.health=5
+
+    if boss1.health>0:
+        boss1.print()
+        boss1.walk(key, background.x, background.y)
+        boss1.walk_animation()
+
+    if boss2.health>0:
+        boss2.print()
+        boss2.walk(key, background.x, background.y)
 
     for event in pygame.event.get():
 
@@ -306,7 +468,7 @@ while player.health>0:
                 key=key_not_input(key, 'd')
 
         if event.type == QUIT:
-            player.health=False
+            player.health=0
 
         if pygame.mouse.get_pressed()[0]:
             player.is_attacking=True
