@@ -44,7 +44,12 @@ class Player(pygame.sprite.Sprite):
 		self.animation_state()
 
 class Sword(pygame.sprite.Sprite):
-	def __init__(self, 
+	def __init__(self):
+		super().__init__()
+		self.image = pygame.image.load('')
+		self.rect = 
+	      
+
 class Obstacle(pygame.sprite.Sprite):
 	def __init__(self,type):
 		super().__init__()
