@@ -28,7 +28,7 @@ class Player(pygame.sprite.Sprite):
         self.arm=5
         self.is_attacking=False
         self.inventory=['1','']
-        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_0.png')
+        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_0.png')
         self.surf=pygame.transform.scale(self.surf, (125,125))
         self.x=438
         self.y=438
