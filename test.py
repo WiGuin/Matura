@@ -280,40 +280,19 @@ class Boss1(pygame.sprite.Sprite):
         self.attack_clock=0
         self.x=410
         self.y=300
-        self.charging=False
-        self.charge=0
     
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
 
     def walk(self, key, x, y):
-        if self.charging:
-            if 410<self.x and self.charge<220:
-                self.x-=15
-            if self.x<410 and self.charge<220:
-                self.x+=15
-            if 400<self.y and self.charge<220:
-                self.y-=15
-            if self.y<400 and self.charge<220:
-                self.y+=15
-            self.charge+=1
-        else:
-            if self.x<410 or self.x>810:
-                self.x-=4
-            if 410<self.x<810 or self.x<0:
-                self.x+=4
-            if self.y<400:
-                self.y-=4
-            if 400<self.y:
-                self.y+=4
-            self.charge=0
-
-        if 10>=self.x or self.x>=810:
-            if 0>=self.y or self.y>=700:
-                self.charging=True
-        
-        if 400<self.x<420 and 390<self.y<430:
-            self.charging=False
+        if 410<self.x:
+            self.x-=6
+        if self.x<410:
+            self.x+=6
+        if 400<self.y:
+            self.y-=6
+        if self.y<400:
+            self.y+=6
 
         if key=='a' or key=='aws' or key=='asw' or key=='was' or key=='wsa' or key=='saw' or key=='swa':
             if x<0:
@@ -470,24 +449,24 @@ while player.health>0:
     else:
         player.arm=5
 
-    # enemy1.print()
-    # enemy1.walk(key, background.x, background.y)
-    # enemy1.walk_animation()
-    # player.health=enemy1.attack(player.health)
-    # enemy1.attack_animation()
-    # if enemy1.health<=0:
-    #     enemy1.x=300
-    #     enemy1.y=-100
-    #     enemy1.health=5
+    enemy1.print()
+    enemy1.walk(key, background.x, background.y)
+    enemy1.walk_animation()
+    player.health=enemy1.attack(player.health)
+    enemy1.attack_animation()
+    if enemy1.health<=0:
+        enemy1.x=300
+        enemy1.y=-100
+        enemy1.health=5
 
     if boss1.health>0:
         boss1.print()
         boss1.walk(key, background.x, background.y)
         boss1.walk_animation()
 
-    # if boss2.health>0:
-    #     boss2.print()
-    #     boss2.walk(key, background.x, background.y)
+    if boss2.health>0:
+        boss2.print()
+        boss2.walk(key, background.x, background.y)
 
     for event in pygame.event.get():
 
