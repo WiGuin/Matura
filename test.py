@@ -33,6 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.x=438
         self.y=438
         self.font=pygame.font.Font('freesansbold.ttf', 32)
+        self.stage = 1
 
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
@@ -451,6 +452,77 @@ class Boss2(pygame.sprite.Sprite):
                 if self.arm >= 60:
                     self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss2'+s+'Bossgegner2_Attack2.png')
 
+class Menu(pygame.sprite.Sprite):
+    def __init__(self):
+        self.menu = True
+        self.stage = 1
+
+        self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button1.png')
+        self.start_x = 300
+        self.start_y = 450
+
+        self.neues_spiel = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Neues Spiel Button1.png')
+        self.neues_spiel_x = 300
+        self.neues_spiel_y = 300
+        self.char1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter1 Button1.png')
+        self.char2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter2 Button1.png')
+
+        self.spiel_laden = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spiel Laden Button1.png')
+        self.spiel_laden_x = 300
+        self.spiel_laden_y = 420
+        self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button1.png')
+        self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button1.png')
+        self.stand3 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand3 Button1.png')
+
+        self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
+        self.zurück_x = 300
+        self.zurück_y = 740
+
+        self.speichern = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern Button1.png')
+
+        self.speichern_verlassen = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern und Verlassen Button1.png')
+
+    def print(self):
+        if self.stage == 1:
+            screen.blit(self.start, (self.start_x, self.start_y))
+        elif self.stage == 2:
+            screen.blit(self.neues_spiel, (self.neues_spiel_x, self.neues_spiel_y))
+            screen.blit(self.spiel_laden, (self.spiel_laden_x, self.spiel_laden_y))
+            screen.blit(self.zurück, (self.zurück_x, self.zurück_y))
+
+    def button(self, left, pos):
+        if self.stage == 1:
+            if 300<pos[0]<600 and 450<pos[1]<550:
+                self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button2.png')
+                self.start_y = 441
+                if left:
+                    self.stage = 2
+            else:
+                self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button1.png')
+                self.start_y = 450
+
+        elif self.stage == 2:
+            if 300<pos[0]<600 and 300<pos[1]<400:
+                self.neues_spiel = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Neues Spiel Button2.png')
+                self.neues_spiel_y = 291
+                if left:
+                    self.stage = 3
+            else:
+                self.neues_spiel = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Neues Spiel Button1.png')
+                self.neues_spiel_y = 300
+
+            if 300<pos[0]<600 and 420<pos[1]<520:
+                self.spiel_laden = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spiel Laden Button2.png')
+                self.spiel_laden_y = 411
+                if left:
+                    self.stage = 4
+            else:
+                self.spiel_laden = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spiel Laden Button1.png')
+                self.spiel_laden_y = 420
+
+            if 300<pos[0]<600 and 740<pos[1]<840 and left:
+                self.stage = 1
+
 
 background=Background()
 
@@ -461,81 +533,97 @@ enemy1=Enemy1()
 boss1=Boss1()
 boss2=Boss2()
 
+menu = Menu()
+
 clock=pygame.time.Clock()
 key='' #Für die Inputs
-stage = 1
 
 while player.health>0:
 
-    background.print()
+    if menu.menu:
+        background.print()
+        menu.print()
 
-    player.print()
-    player.walk(key)
-    player.animation(key)
-    if player.is_attacking:
-        player.arm+=1
-        boss1.health = player.attack(boss1.x, boss1.y, boss1.health, '10')
-        boss2.health = player.attack(boss2.x, boss2.y, boss2.health, '20')
-        enemy1.health = player.attack(enemy1.x, enemy1.y, enemy1.health, '1')
-        print(boss2.health)
+        for event in pygame.event.get():
+
+            menu.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos())
+
+            if event.type == QUIT:
+                player.health=0
+
+        clock.tick(30)
+        pygame.display.flip()
+
     else:
-        player.arm=5
+        background.print()
 
-    # enemy1.print()
-    # enemy1.walk(key, background.x, background.y)
-    # enemy1.walk_animation()
-    # player.health=enemy1.attack(player.health)
-    # enemy1.attack_animation()
-    # if enemy1.health<=0:
-    #     enemy1.x=300
-    #     enemy1.y=-100
-    #     enemy1.health=5
-
-    # if boss1.health>0:
-    #     boss1.print()
-    #     boss1.walk(key, background.x, background.y)
-    #     boss1.walk_animation()
-    #     player.health = boss1.attack(player.health)
-    #     boss1.attack_animation()
-
-    # if boss2.health>0:
-    #     boss2.print()
-    #     boss2.walk(key, background.x, background.y)
-    #     boss2.walk_animation()
-    #     player.health = boss2.attack(player.health)
-    #     boss2.attack_animation()
-
-    for event in pygame.event.get():
-
-        if event.type == KEYDOWN:
-
-            if event.key == K_w:
-                key+='w'
-            if event.key == K_s:
-                key+='s'
-            if event.key == K_a:
-                key+='a'
-            if event.key == K_d:
-                key+='d'
-
-        if event.type == KEYUP:
-            if event.key == K_w:
-                key=key_not_input(key, 'w')
-            if event.key == K_s:
-                key=key_not_input(key, 's')
-            if event.key == K_a:
-                key=key_not_input(key, 'a')
-            if event.key == K_d:
-                key=key_not_input(key, 'd')
-
-        if event.type == QUIT:
-            player.health=0
-
-        if pygame.mouse.get_pressed()[0]:
-            player.is_attacking=True
+        player.print()
+        player.walk(key)
+        player.animation(key)
+        if player.is_attacking:
+            player.arm+=1
+            boss1.health = player.attack(boss1.x, boss1.y, boss1.health, '10')
+            boss2.health = player.attack(boss2.x, boss2.y, boss2.health, '20')
+            enemy1.health = player.attack(enemy1.x, enemy1.y, enemy1.health, '1')
+            print(boss2.health)
         else:
-            player.is_attacking=False
+            player.arm=5
+
+        # enemy1.print()
+        # enemy1.walk(key, background.x, background.y)
+        # enemy1.walk_animation()
+        # player.health=enemy1.attack(player.health)
+        # enemy1.attack_animation()
+        # if enemy1.health<=0:
+        #     enemy1.x=300
+        #     enemy1.y=-100
+        #     enemy1.health=5
+
+        # if boss1.health>0:
+        #     boss1.print()
+        #     boss1.walk(key, background.x, background.y)
+        #     boss1.walk_animation()
+        #     player.health = boss1.attack(player.health)
+        #     boss1.attack_animation()
+
+        # if boss2.health>0:
+        #     boss2.print()
+        #     boss2.walk(key, background.x, background.y)
+        #     boss2.walk_animation()
+        #     player.health = boss2.attack(player.health)
+        #     boss2.attack_animation()
+
+        for event in pygame.event.get():
+
+            if event.type == KEYDOWN:
+
+                if event.key == K_w:
+                    key+='w'
+                if event.key == K_s:
+                    key+='s'
+                if event.key == K_a:
+                    key+='a'
+                if event.key == K_d:
+                    key+='d'
+
+            if event.type == KEYUP:
+                if event.key == K_w:
+                    key=key_not_input(key, 'w')
+                if event.key == K_s:
+                    key=key_not_input(key, 's')
+                if event.key == K_a:
+                    key=key_not_input(key, 'a')
+                if event.key == K_d:
+                    key=key_not_input(key, 'd')
+
+            if event.type == QUIT:
+                player.health=0
+
+            if pygame.mouse.get_pressed()[0]:
+                player.is_attacking=True
+            else:
+                player.is_attacking=False
 
 
-    clock.tick(30)
-    pygame.display.flip()
+        clock.tick(30)
+        pygame.display.flip()
