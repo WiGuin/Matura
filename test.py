@@ -455,7 +455,7 @@ class Boss2(pygame.sprite.Sprite):
 class Menu(pygame.sprite.Sprite):
     def __init__(self):
         self.menu = True
-        self.stage = 1
+        self.stage = 5
 
         self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button1.png')
         self.start_x = 300
@@ -487,12 +487,12 @@ class Menu(pygame.sprite.Sprite):
         self.zurück_y = 740
 
         self.speichern = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern Button1.png')
-        self.speichern_x = 0
-        self.speichern_y = 0
+        self.speichern_x = 276
+        self.speichern_y = 300
 
         self.speichern_verlassen = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern und Verlassen Button1.png')
-        self.speichern_verlassen_x = 0
-        self.speichern_verlassen_y = 0
+        self.speichern_verlassen_x = 276
+        self.speichern_verlassen_y = 420
 
     def print(self):
         if self.stage == 1:
@@ -508,6 +508,10 @@ class Menu(pygame.sprite.Sprite):
         elif self.stage == 4:
             screen.blit(self.stand1, (self.stand1_x, self.stand1_y))
             screen.blit(self.stand2, (self.stand2_x, self.stand2_y))
+            screen.blit(self.zurück, (self.zurück_x, self.zurück_y))
+        elif self.stage == 5:
+            screen.blit(self.speichern, (self.speichern_x, self.speichern_y))
+            screen.blit(self.speichern_verlassen, (self.speichern_verlassen_x, self.speichern_verlassen_y))
             screen.blit(self.zurück, (self.zurück_x, self.zurück_y))
 
     def button(self, left, pos):
@@ -585,7 +589,7 @@ class Menu(pygame.sprite.Sprite):
                 self.zurück_x = 300
 
         elif self.stage == 4:
-            if 30<pos[0]<434 and 25<pos[1]<325:
+            if 30<pos[0]<464 and 25<pos[1]<459:
                 self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button2.png')
                 self.stand1_x = 2
                 if left:
@@ -595,12 +599,53 @@ class Menu(pygame.sprite.Sprite):
                 self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button1.png')
                 self.stand1_x = 30
             
+            if 541<pos[0]<975 and 25<pos[1]<459:
+                self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button2.png')
+                self.stand2_x = 513
+                if left:
+                    time.sleep(0.1)
+                    print("Spielstand2")
+            else:
+                self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button1.png')
+                self.stand2_x = 541
+            
             if 300<pos[0]<700 and 740<pos[1]<840:
                 self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
                 self.zurück_x = 290
                 if left:
                     time.sleep(0.1)
                     self.stage = 2
+            else:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
+                self.zurück_x = 300
+
+        elif self.stage == 5:
+            if 276<pos[0]<724 and 300<pos[1]<398:
+                self.speichern = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern Button2.png')
+                self.speichern_x = 263
+                if left:
+                    time.sleep(0.1)
+                    print("Speichern")
+            else:
+                self.speichern = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern Button1.png')
+                self.speichern_x = 276
+
+            if 276<pos[0]<724 and 420<pos[1]<518:
+                self.speichern_verlassen = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern und Verlassen Button2.png')
+                self.speichern_verlassen_x = 263
+                if left:
+                    time.sleep(0.1)
+                    print("Speichern und Verlassen")
+            else:
+                self.speichern_verlassen = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern und Verlassen Button1.png')
+                self.speichern_verlassen_x = 276
+
+            if 300<pos[0]<700 and 740<pos[1]<840:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
+                self.zurück_x = 290
+                if left:
+                    time.sleep(0.1)
+                    self.stage = 0
             else:
                 self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
                 self.zurück_x = 300
@@ -625,6 +670,9 @@ while player.health>0:
         background.print()
         menu.print()
 
+        if menu.stage == 0:
+            menu.menu = False
+
         for event in pygame.event.get():
 
             menu.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos())
@@ -646,37 +694,39 @@ while player.health>0:
             boss1.health = player.attack(boss1.x, boss1.y, boss1.health, '10')
             boss2.health = player.attack(boss2.x, boss2.y, boss2.health, '20')
             enemy1.health = player.attack(enemy1.x, enemy1.y, enemy1.health, '1')
-            print(boss2.health)
         else:
             player.arm=5
 
-        # enemy1.print()
-        # enemy1.walk(key, background.x, background.y)
-        # enemy1.walk_animation()
-        # player.health=enemy1.attack(player.health)
-        # enemy1.attack_animation()
-        # if enemy1.health<=0:
-        #     enemy1.x=300
-        #     enemy1.y=-100
-        #     enemy1.health=5
+        enemy1.print()
+        enemy1.walk(key, background.x, background.y)
+        enemy1.walk_animation()
+        player.health=enemy1.attack(player.health)
+        enemy1.attack_animation()
+        if enemy1.health<=0:
+            enemy1.x=300
+            enemy1.y=-100
+            enemy1.health=5
 
-        # if boss1.health>0:
-        #     boss1.print()
-        #     boss1.walk(key, background.x, background.y)
-        #     boss1.walk_animation()
-        #     player.health = boss1.attack(player.health)
-        #     boss1.attack_animation()
+        if boss1.health>0:
+            boss1.print()
+            boss1.walk(key, background.x, background.y)
+            boss1.walk_animation()
+            player.health = boss1.attack(player.health)
+            boss1.attack_animation()
 
-        # if boss2.health>0:
-        #     boss2.print()
-        #     boss2.walk(key, background.x, background.y)
-        #     boss2.walk_animation()
-        #     player.health = boss2.attack(player.health)
-        #     boss2.attack_animation()
+        if boss2.health>0:
+            boss2.print()
+            boss2.walk(key, background.x, background.y)
+            boss2.walk_animation()
+            player.health = boss2.attack(player.health)
+            boss2.attack_animation()
 
         for event in pygame.event.get():
 
             if event.type == KEYDOWN:
+
+                if event.key == K_ESCAPE:
+                    menu.menu = True
 
                 if event.key == K_w:
                     key+='w'
