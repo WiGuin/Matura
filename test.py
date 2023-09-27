@@ -1,4 +1,4 @@
-import pygame,os
+import pygame,os, time
 pygame.init()
 from pygame.locals import *
 s='\\'
@@ -465,22 +465,34 @@ class Menu(pygame.sprite.Sprite):
         self.neues_spiel_x = 300
         self.neues_spiel_y = 300
         self.char1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter1 Button1.png')
+        self.char1_x = 30
+        self.char1_y = 200
+
         self.char2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter2 Button1.png')
+        self.char2_x = 541
+        self.char2_y = 200
 
         self.spiel_laden = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spiel Laden Button1.png')
         self.spiel_laden_x = 300
         self.spiel_laden_y = 420
         self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button1.png')
+        self.stand1_x = 30
+        self.stand1_y = 25
         self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button1.png')
-        self.stand3 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand3 Button1.png')
+        self.stand2_x = 541
+        self.stand2_y = 25
 
         self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
         self.zurück_x = 300
         self.zurück_y = 740
 
         self.speichern = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern Button1.png')
+        self.speichern_x = 0
+        self.speichern_y = 0
 
         self.speichern_verlassen = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern und Verlassen Button1.png')
+        self.speichern_verlassen_x = 0
+        self.speichern_verlassen_y = 0
 
     def print(self):
         if self.stage == 1:
@@ -489,40 +501,109 @@ class Menu(pygame.sprite.Sprite):
             screen.blit(self.neues_spiel, (self.neues_spiel_x, self.neues_spiel_y))
             screen.blit(self.spiel_laden, (self.spiel_laden_x, self.spiel_laden_y))
             screen.blit(self.zurück, (self.zurück_x, self.zurück_y))
+        elif self.stage == 3:
+            screen.blit(self.char1, (self.char1_x, self.char1_y))
+            screen.blit(self.char2, (self.char2_x, self.char2_y))
+            screen.blit(self.zurück, (self.zurück_x, self.zurück_y))
+        elif self.stage == 4:
+            screen.blit(self.stand1, (self.stand1_x, self.stand1_y))
+            screen.blit(self.stand2, (self.stand2_x, self.stand2_y))
+            screen.blit(self.zurück, (self.zurück_x, self.zurück_y))
 
     def button(self, left, pos):
         if self.stage == 1:
-            if 300<pos[0]<600 and 450<pos[1]<550:
+            if 300<pos[0]<700 and 450<pos[1]<550:
                 self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button2.png')
-                self.start_y = 441
+                self.start_x = 290
                 if left:
+                    time.sleep(0.1)
                     self.stage = 2
             else:
                 self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button1.png')
-                self.start_y = 450
+                self.start_x = 300
 
         elif self.stage == 2:
-            if 300<pos[0]<600 and 300<pos[1]<400:
+            if 300<pos[0]<700 and 300<pos[1]<400:
                 self.neues_spiel = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Neues Spiel Button2.png')
-                self.neues_spiel_y = 291
+                self.neues_spiel_x = 291
                 if left:
+                    time.sleep(0.1)
                     self.stage = 3
             else:
                 self.neues_spiel = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Neues Spiel Button1.png')
-                self.neues_spiel_y = 300
+                self.neues_spiel_x = 300
 
-            if 300<pos[0]<600 and 420<pos[1]<520:
+            if 300<pos[0]<700 and 420<pos[1]<520:
                 self.spiel_laden = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spiel Laden Button2.png')
-                self.spiel_laden_y = 411
+                self.spiel_laden_x = 290
                 if left:
+                    time.sleep(0.1)
                     self.stage = 4
             else:
                 self.spiel_laden = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spiel Laden Button1.png')
-                self.spiel_laden_y = 420
+                self.spiel_laden_x = 300
 
-            if 300<pos[0]<600 and 740<pos[1]<840 and left:
-                self.stage = 1
+            if 300<pos[0]<700 and 740<pos[1]<840:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
+                self.zurück_x = 290
+                if left:
+                    time.sleep(0.1)
+                    self.stage = 1
+            else:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
+                self.zurück_x = 300
 
+        elif self.stage == 3:
+            if 25<pos[0]<459 and 200<pos[1]<634:
+                self.char1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter1 Button2.png')
+                self.char1_x = 2
+                if left:
+                    time.sleep(0.1)
+                    print("Charakter 1")
+            else:
+                self.char1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter1 Button1.png')
+                self.char1_x = 30
+
+            if 541<pos[0]<975 and 200<pos[1]<634:
+                self.char2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter2 Button2.png')
+                self.char2_x = 513
+                if left:
+                    time.sleep(0.1)
+                    print("Charakter 2")
+            else:
+                self.char2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter2 Button1.png')
+                self.char2_x = 541
+
+            if 300<pos[0]<700 and 740<pos[1]<840:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
+                self.zurück_x = 290
+                if left:
+                    time.sleep(0.1)
+                    self.stage = 2
+            else:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
+                self.zurück_x = 300
+
+        elif self.stage == 4:
+            if 30<pos[0]<434 and 25<pos[1]<325:
+                self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button2.png')
+                self.stand1_x = 2
+                if left:
+                    time.sleep(0.1)
+                    print("Spielstand1")
+            else:
+                self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button1.png')
+                self.stand1_x = 30
+            
+            if 300<pos[0]<700 and 740<pos[1]<840:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
+                self.zurück_x = 290
+                if left:
+                    time.sleep(0.1)
+                    self.stage = 2
+            else:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
+                self.zurück_x = 300
 
 background=Background()
 
