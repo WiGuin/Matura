@@ -94,37 +94,38 @@ class Player(pygame.sprite.Sprite):
         return(key!='')
 
     def attack(self, x, y, enemy_health, type):
+        gegner_leben = enemy_health
         if type=='1':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
                     if 463<x<608 and 360<y<500:
-                        enemy_health-=1
+                        gegner_leben-=1
                 if self.face=='left':
                     if 392<x<510 and 360<y<500:
-                        enemy_health-=1
+                        gegner_leben-=1
         if type=='10':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
                     if 350<x<595 and 170<y<500:
-                        enemy_health-=1
+                        gegner_leben-=1
                 if self.face=='left':
                     if 225<x<470 and 170<y<500:
-                        enemy_health-=1
+                        gegner_leben-=1
         if type=='20':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
                     if 260<x<620 and 165<y<500:
-                        enemy_health-=1
+                        gegner_leben-=1
                 if self.face=='left':
                     if 150<x<520 and 165<y<500:
-                        enemy_health-=1
-        return enemy_health
+                        gegner_leben-=1
+        return(gegner_leben)
 
     def animation(self, key):
         if self.is_attacking and key!='':
@@ -132,42 +133,42 @@ class Player(pygame.sprite.Sprite):
                 self.leg=10
             if self.leg<20:
                 if self.arm>=29 or self.arm<5:
-                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_1_attack_1.png')
+                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_1_attack_1.png')
                     self.surf=pygame.transform.scale(self.surf, (229,125))
                     self.x=386
                 else:
-                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_1_attack_0.png')
+                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_1_attack_0.png')
                     self.surf=pygame.transform.scale(self.surf, (125,125))
                     self.x=438
             else:
                 if self.arm==29 or self.arm<5:
-                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_2_attack_1.png')
+                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_2_attack_1.png')
                     self.surf=pygame.transform.scale(self.surf, (229,125))
                     self.x=386
                 else:
-                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_2_attack_0.png')
+                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_2_attack_0.png')
                     self.surf=pygame.transform.scale(self.surf, (125,125))
                     self.x=438
         elif key!='':
             if self.leg>=30:
                 self.leg=10
             if self.leg<20:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_1.png')
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_1.png')
             else:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_2.png')
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_2.png')
             self.surf=pygame.transform.scale(self.surf, (125,125))
             self.x=438
         elif self.is_attacking:
             if self.arm>=29 or self.arm<5:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_0_attack_1.png')
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_0_attack_1.png')
                 self.surf=pygame.transform.scale(self.surf, (229,125))
                 self.x=386
             else:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_0_attack_0.png')
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_0_attack_0.png')
                 self.surf=pygame.transform.scale(self.surf, (125,125))
                 self.x=438
         elif key=='' and self.is_attacking==False:
-            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+player.inventory[0]+'_0.png')
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+player.inventory[0]+'_0.png')
             self.surf=pygame.transform.scale(self.surf, (125,125))
             self.x=438
         if self.face=='left':
@@ -272,7 +273,7 @@ class Enemy1(pygame.sprite.Sprite):
 
 class Boss1(pygame.sprite.Sprite):
     def __init__(self):
-        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner1.png')
+        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss1'+s+'Bossgegner1.png')
         self.health=15
         self.face='right'
         self.leg=0
@@ -332,21 +333,21 @@ class Boss1(pygame.sprite.Sprite):
             self.face='right'
         else:
             self.face='left'
-        if 690>self.x>310 and 545>self.y>370:
+        if 600>self.x>120 and 545>self.y>370:
             pass
         else:
             if self.leg>=40:
                 self.leg=0
             if self.leg<20:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner1_Walk1.png')
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss1'+s+'Bossgegner1_Walk1.png')
             else:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner1_Walk2.png')
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss1'+s+'Bossgegner1_Walk2.png')
             if self.face=='left':
                 self.surf=pygame.transform.flip(self.surf, True, False)
             self.leg+=1
 
     def attack(self, player_health):
-        if 690>self.x>310 and 545>self.y>370:
+        if 600>self.x>120 and 545>self.y>370:
             if self.arm>=40:
                 self.arm=0
                 player_health-=2
@@ -356,20 +357,19 @@ class Boss1(pygame.sprite.Sprite):
         return(player_health)
         
     def attack_animation(self):
-        if 690>self.x>310 and 545>self.y>370:
+        if 600>self.x>120 and 545>self.y>370:
             if self.arm<30:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner1_attack_1.png')
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss1'+s+'Bossgegner1_attack1.png')
             else:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Goblin'+s+'Bossgegner1_attack_2.png')
-            if self.face=='right':
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss1'+s+'Bossgegner1_attack2.png')
+            if self.face=='left':
                 self.surf=pygame.transform.flip(self.surf, True, False)
             self.attack_clock+=1
 
 class Boss2(pygame.sprite.Sprite):
     def __init__(self):
-        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner2.png')
+        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss2'+s+'Bossgegner2.png')
         self.health=15
-        self.face='center'
         self.leg=0
         self.arm=0
         self.attack_clock=0
@@ -421,6 +421,36 @@ class Boss2(pygame.sprite.Sprite):
             if y>-4000:
                 self.y-=50**0.5
 
+    def walk_animation(self):
+        if self.leg>=40:
+            self.leg=0
+        if self.leg<20:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss2'+s+'Bossgegner2_Walk1.png')
+        else:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss2'+s+'Bossgegner2_Walk2.png')
+        self.leg+=1
+
+    def attack(self, player_health):
+        if 550>self.x>150 and 550>self.y>200:
+            if self.arm == 55:
+                player_health-=2
+            elif self.arm == 60:
+                player_health-=2
+            elif self.arm >= 65:
+                self.arm = 0
+            self.arm+=1
+        else:
+            self.arm=20
+        return(player_health)
+        
+    def attack_animation(self):
+        if self.arm >= 20:
+            if 550>self.x>150 and 550>self.y>200:
+                if self.arm >= 55:
+                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss2'+s+'Bossgegner2_Attack1.png')
+                if self.arm >= 60:
+                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss2'+s+'Bossgegner2_Attack2.png')
+
 
 background=Background()
 
@@ -433,6 +463,7 @@ boss2=Boss2()
 
 clock=pygame.time.Clock()
 key='' #Für die Inputs
+stage = 1
 
 while player.health>0:
 
@@ -443,30 +474,36 @@ while player.health>0:
     player.animation(key)
     if player.is_attacking:
         player.arm+=1
-        boss1.health=player.attack(boss1.x, boss1.y, boss1.health, '10')
-        boss1.health=player.attack(boss2.x, boss2.y, boss2.health, '20')
-        enemy1.health=player.attack(enemy1.x, enemy1.y, enemy1.health, '1')
+        boss1.health = player.attack(boss1.x, boss1.y, boss1.health, '10')
+        boss2.health = player.attack(boss2.x, boss2.y, boss2.health, '20')
+        enemy1.health = player.attack(enemy1.x, enemy1.y, enemy1.health, '1')
+        print(boss2.health)
     else:
         player.arm=5
 
-    enemy1.print()
-    enemy1.walk(key, background.x, background.y)
-    enemy1.walk_animation()
-    player.health=enemy1.attack(player.health)
-    enemy1.attack_animation()
-    if enemy1.health<=0:
-        enemy1.x=300
-        enemy1.y=-100
-        enemy1.health=5
+    # enemy1.print()
+    # enemy1.walk(key, background.x, background.y)
+    # enemy1.walk_animation()
+    # player.health=enemy1.attack(player.health)
+    # enemy1.attack_animation()
+    # if enemy1.health<=0:
+    #     enemy1.x=300
+    #     enemy1.y=-100
+    #     enemy1.health=5
 
-    if boss1.health>0:
-        boss1.print()
-        boss1.walk(key, background.x, background.y)
-        boss1.walk_animation()
+    # if boss1.health>0:
+    #     boss1.print()
+    #     boss1.walk(key, background.x, background.y)
+    #     boss1.walk_animation()
+    #     player.health = boss1.attack(player.health)
+    #     boss1.attack_animation()
 
-    if boss2.health>0:
-        boss2.print()
-        boss2.walk(key, background.x, background.y)
+    # if boss2.health>0:
+    #     boss2.print()
+    #     boss2.walk(key, background.x, background.y)
+    #     boss2.walk_animation()
+    #     player.health = boss2.attack(player.health)
+    #     boss2.attack_animation()
 
     for event in pygame.event.get():
 
