@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.health=10
         self.arm=5
         self.is_attacking=False
-        self.inventory=['1','']
+        self.inventory=['5','']
         self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_0.png')
         self.surf=pygame.transform.scale(self.surf, (125,125))
         self.x=438
@@ -663,10 +663,12 @@ menu = Menu()
 
 clock=pygame.time.Clock()
 key='' #Für die Inputs
+game = True
 
-while player.health>0:
+while game:
 
     if menu.menu:
+        player.health = 10
         background.print()
         menu.print()
 
@@ -678,7 +680,7 @@ while player.health>0:
             menu.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos())
 
             if event.type == QUIT:
-                player.health=0
+                game = False
 
         clock.tick(30)
         pygame.display.flip()
@@ -691,11 +693,8 @@ while player.health>0:
         player.animation(key)
         if player.is_attacking:
             player.arm+=1
-            boss1.health = player.attack(boss1.x, boss1.y, boss1.health, '10')
-            boss2.health = player.attack(boss2.x, boss2.y, boss2.health, '20')
-            enemy1.health = player.attack(enemy1.x, enemy1.y, enemy1.health, '1')
         else:
-            player.arm=5
+            player.arm=25
 
         enemy1.print()
         enemy1.walk(key, background.x, background.y)
@@ -706,6 +705,8 @@ while player.health>0:
             enemy1.x=300
             enemy1.y=-100
             enemy1.health=5
+        if player.is_attacking:
+            enemy1.health = player.attack(enemy1.x, enemy1.y, enemy1.health, '1')
 
         if boss1.health>0:
             boss1.print()
@@ -713,6 +714,8 @@ while player.health>0:
             boss1.walk_animation()
             player.health = boss1.attack(player.health)
             boss1.attack_animation()
+        if player.is_attacking:
+            boss1.health = player.attack(boss1.x, boss1.y, boss1.health, '10')
 
         if boss2.health>0:
             boss2.print()
@@ -720,6 +723,8 @@ while player.health>0:
             boss2.walk_animation()
             player.health = boss2.attack(player.health)
             boss2.attack_animation()
+        if player.is_attacking:
+            boss2.health = player.attack(boss2.x, boss2.y, boss2.health, '20')
 
         for event in pygame.event.get():
 
@@ -748,15 +753,18 @@ while player.health>0:
                     key=key_not_input(key, 'd')
 
             if event.type == QUIT:
-                player.health=0
+                game
 
             if pygame.mouse.get_pressed()[0]:
                 player.is_attacking=True
             else:
                 player.is_attacking=False
 
+        if player.health <= 0:
+            menu.stage = 2
+            menu.menu = True
 
         clock.tick(30)
         pygame.display.flip()
-        
+
 pygame.quit()
