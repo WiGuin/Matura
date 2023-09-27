@@ -1,4 +1,4 @@
-import pygame,os
+import pygame,os, time
 pygame.init()
 from pygame.locals import *
 s='\\'
@@ -28,11 +28,12 @@ class Player(pygame.sprite.Sprite):
         self.arm=5
         self.is_attacking=False
         self.inventory=['1','']
-        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_0.png')
+        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_0.png')
         self.surf=pygame.transform.scale(self.surf, (125,125))
         self.x=438
         self.y=438
         self.font=pygame.font.Font('freesansbold.ttf', 32)
+        self.stage = 1
 
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
@@ -94,37 +95,38 @@ class Player(pygame.sprite.Sprite):
         return(key!='')
 
     def attack(self, x, y, enemy_health, type):
+        gegner_leben = enemy_health
         if type=='1':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
                     if 463<x<608 and 360<y<500:
-                        enemy_health-=1
+                        gegner_leben-=1
                 if self.face=='left':
                     if 392<x<510 and 360<y<500:
-                        enemy_health-=1
+                        gegner_leben-=1
         if type=='10':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
                     if 350<x<595 and 170<y<500:
-                        enemy_health-=1
+                        gegner_leben-=1
                 if self.face=='left':
                     if 225<x<470 and 170<y<500:
-                        enemy_health-=1
+                        gegner_leben-=1
         if type=='20':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
                     if 260<x<620 and 165<y<500:
-                        enemy_health-=1
+                        gegner_leben-=1
                 if self.face=='left':
                     if 150<x<520 and 165<y<500:
-                        enemy_health-=1
-        return enemy_health
+                        gegner_leben-=1
+        return(gegner_leben)
 
     def animation(self, key):
         if self.is_attacking and key!='':
@@ -132,42 +134,42 @@ class Player(pygame.sprite.Sprite):
                 self.leg=10
             if self.leg<20:
                 if self.arm>=29 or self.arm<5:
-                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_1_attack_1.png')
+                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_1_attack_1.png')
                     self.surf=pygame.transform.scale(self.surf, (229,125))
                     self.x=386
                 else:
-                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_1_attack_0.png')
+                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_1_attack_0.png')
                     self.surf=pygame.transform.scale(self.surf, (125,125))
                     self.x=438
             else:
                 if self.arm==29 or self.arm<5:
-                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_2_attack_1.png')
+                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_2_attack_1.png')
                     self.surf=pygame.transform.scale(self.surf, (229,125))
                     self.x=386
                 else:
-                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_2_attack_0.png')
+                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_2_attack_0.png')
                     self.surf=pygame.transform.scale(self.surf, (125,125))
                     self.x=438
         elif key!='':
             if self.leg>=30:
                 self.leg=10
             if self.leg<20:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_1.png')
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_1.png')
             else:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_2.png')
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_2.png')
             self.surf=pygame.transform.scale(self.surf, (125,125))
             self.x=438
         elif self.is_attacking:
             if self.arm>=29 or self.arm<5:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_0_attack_1.png')
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_0_attack_1.png')
                 self.surf=pygame.transform.scale(self.surf, (229,125))
                 self.x=386
             else:
-                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+self.inventory[0]+'_0_attack_0.png')
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_0_attack_0.png')
                 self.surf=pygame.transform.scale(self.surf, (125,125))
                 self.x=438
         elif key=='' and self.is_attacking==False:
-            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Characters'+s+'character1_'+player.inventory[0]+'_0.png')
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+player.inventory[0]+'_0.png')
             self.surf=pygame.transform.scale(self.surf, (125,125))
             self.x=438
         if self.face=='left':
@@ -272,7 +274,7 @@ class Enemy1(pygame.sprite.Sprite):
 
 class Boss1(pygame.sprite.Sprite):
     def __init__(self):
-        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner1.png')
+        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss1'+s+'Bossgegner1.png')
         self.health=15
         self.face='right'
         self.leg=0
@@ -285,14 +287,15 @@ class Boss1(pygame.sprite.Sprite):
         screen.blit(self.surf, (self.x,self.y))
 
     def walk(self, key, x, y):
-        if 10<self.x<260 or 410<self.x<560:
-            self.x-=2
-        if 560<self.x<810 or 260<self.x<410:
-            self.x+=2
-        if 0<self.y<200 or 300<self.y<400:
-            self.y-=2
-        if 400<self.y<700 or 200<self.y<300:
-            self.y+=2
+        if 410<self.x:
+            self.x-=6
+        if self.x<410:
+            self.x+=6
+        if 400<self.y:
+            self.y-=6
+        if self.y<400:
+            self.y+=6
+
         if key=='a' or key=='aws' or key=='asw' or key=='was' or key=='wsa' or key=='saw' or key=='swa':
             if x<0:
                 self.x+=10
@@ -331,21 +334,43 @@ class Boss1(pygame.sprite.Sprite):
             self.face='right'
         else:
             self.face='left'
-        if self.leg>=40:
-            self.leg=0
-        if self.leg<20:
-            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner1_Walk1.png')
+        if 600>self.x>120 and 545>self.y>370:
+            pass
         else:
-            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner1_Walk2.png')
-        if self.face=='left':
-            self.surf=pygame.transform.flip(self.surf, True, False)
-        self.leg+=1
+            if self.leg>=40:
+                self.leg=0
+            if self.leg<20:
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss1'+s+'Bossgegner1_Walk1.png')
+            else:
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss1'+s+'Bossgegner1_Walk2.png')
+            if self.face=='left':
+                self.surf=pygame.transform.flip(self.surf, True, False)
+            self.leg+=1
+
+    def attack(self, player_health):
+        if 600>self.x>120 and 545>self.y>370:
+            if self.arm>=40:
+                self.arm=0
+                player_health-=2
+            self.arm+=1
+        else:
+            self.arm=20
+        return(player_health)
+        
+    def attack_animation(self):
+        if 600>self.x>120 and 545>self.y>370:
+            if self.arm<30:
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss1'+s+'Bossgegner1_attack1.png')
+            else:
+                self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss1'+s+'Bossgegner1_attack2.png')
+            if self.face=='left':
+                self.surf=pygame.transform.flip(self.surf, True, False)
+            self.attack_clock+=1
 
 class Boss2(pygame.sprite.Sprite):
     def __init__(self):
-        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Gegner'+s+'Bossgegner2.png')
+        self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss2'+s+'Bossgegner2.png')
         self.health=15
-        self.face='center'
         self.leg=0
         self.arm=0
         self.attack_clock=0
@@ -397,6 +422,233 @@ class Boss2(pygame.sprite.Sprite):
             if y>-4000:
                 self.y-=50**0.5
 
+    def walk_animation(self):
+        if self.leg>=40:
+            self.leg=0
+        if self.leg<20:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss2'+s+'Bossgegner2_Walk1.png')
+        else:
+            self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss2'+s+'Bossgegner2_Walk2.png')
+        self.leg+=1
+
+    def attack(self, player_health):
+        if 550>self.x>150 and 550>self.y>200:
+            if self.arm == 55:
+                player_health-=2
+            elif self.arm == 60:
+                player_health-=2
+            elif self.arm >= 65:
+                self.arm = 0
+            self.arm+=1
+        else:
+            self.arm=20
+        return(player_health)
+        
+    def attack_animation(self):
+        if self.arm >= 20:
+            if 550>self.x>150 and 550>self.y>200:
+                if self.arm >= 55:
+                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss2'+s+'Bossgegner2_Attack1.png')
+                if self.arm >= 60:
+                    self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss2'+s+'Bossgegner2_Attack2.png')
+
+class Menu(pygame.sprite.Sprite):
+    def __init__(self):
+        self.menu = True
+        self.stage = 5
+
+        self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button1.png')
+        self.start_x = 300
+        self.start_y = 450
+
+        self.neues_spiel = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Neues Spiel Button1.png')
+        self.neues_spiel_x = 300
+        self.neues_spiel_y = 300
+        self.char1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter1 Button1.png')
+        self.char1_x = 30
+        self.char1_y = 200
+
+        self.char2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter2 Button1.png')
+        self.char2_x = 541
+        self.char2_y = 200
+
+        self.spiel_laden = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spiel Laden Button1.png')
+        self.spiel_laden_x = 300
+        self.spiel_laden_y = 420
+        self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button1.png')
+        self.stand1_x = 30
+        self.stand1_y = 25
+        self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button1.png')
+        self.stand2_x = 541
+        self.stand2_y = 25
+
+        self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
+        self.zurück_x = 300
+        self.zurück_y = 740
+
+        self.speichern = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern Button1.png')
+        self.speichern_x = 276
+        self.speichern_y = 300
+
+        self.speichern_verlassen = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern und Verlassen Button1.png')
+        self.speichern_verlassen_x = 276
+        self.speichern_verlassen_y = 420
+
+    def print(self):
+        if self.stage == 1:
+            screen.blit(self.start, (self.start_x, self.start_y))
+        elif self.stage == 2:
+            screen.blit(self.neues_spiel, (self.neues_spiel_x, self.neues_spiel_y))
+            screen.blit(self.spiel_laden, (self.spiel_laden_x, self.spiel_laden_y))
+            screen.blit(self.zurück, (self.zurück_x, self.zurück_y))
+        elif self.stage == 3:
+            screen.blit(self.char1, (self.char1_x, self.char1_y))
+            screen.blit(self.char2, (self.char2_x, self.char2_y))
+            screen.blit(self.zurück, (self.zurück_x, self.zurück_y))
+        elif self.stage == 4:
+            screen.blit(self.stand1, (self.stand1_x, self.stand1_y))
+            screen.blit(self.stand2, (self.stand2_x, self.stand2_y))
+            screen.blit(self.zurück, (self.zurück_x, self.zurück_y))
+        elif self.stage == 5:
+            screen.blit(self.speichern, (self.speichern_x, self.speichern_y))
+            screen.blit(self.speichern_verlassen, (self.speichern_verlassen_x, self.speichern_verlassen_y))
+            screen.blit(self.zurück, (self.zurück_x, self.zurück_y))
+
+    def button(self, left, pos):
+        if self.stage == 1:
+            if 300<pos[0]<700 and 450<pos[1]<550:
+                self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button2.png')
+                self.start_x = 290
+                if left:
+                    time.sleep(0.1)
+                    self.stage = 2
+            else:
+                self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button1.png')
+                self.start_x = 300
+
+        elif self.stage == 2:
+            if 300<pos[0]<700 and 300<pos[1]<400:
+                self.neues_spiel = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Neues Spiel Button2.png')
+                self.neues_spiel_x = 291
+                if left:
+                    time.sleep(0.1)
+                    self.stage = 3
+            else:
+                self.neues_spiel = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Neues Spiel Button1.png')
+                self.neues_spiel_x = 300
+
+            if 300<pos[0]<700 and 420<pos[1]<520:
+                self.spiel_laden = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spiel Laden Button2.png')
+                self.spiel_laden_x = 290
+                if left:
+                    time.sleep(0.1)
+                    self.stage = 4
+            else:
+                self.spiel_laden = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spiel Laden Button1.png')
+                self.spiel_laden_x = 300
+
+            if 300<pos[0]<700 and 740<pos[1]<840:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
+                self.zurück_x = 290
+                if left:
+                    time.sleep(0.1)
+                    self.stage = 1
+            else:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
+                self.zurück_x = 300
+
+        elif self.stage == 3:
+            if 25<pos[0]<459 and 200<pos[1]<634:
+                self.char1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter1 Button2.png')
+                self.char1_x = 2
+                if left:
+                    time.sleep(0.1)
+                    print("Charakter 1")
+            else:
+                self.char1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter1 Button1.png')
+                self.char1_x = 30
+
+            if 541<pos[0]<975 and 200<pos[1]<634:
+                self.char2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter2 Button2.png')
+                self.char2_x = 513
+                if left:
+                    time.sleep(0.1)
+                    print("Charakter 2")
+            else:
+                self.char2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter2 Button1.png')
+                self.char2_x = 541
+
+            if 300<pos[0]<700 and 740<pos[1]<840:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
+                self.zurück_x = 290
+                if left:
+                    time.sleep(0.1)
+                    self.stage = 2
+            else:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
+                self.zurück_x = 300
+
+        elif self.stage == 4:
+            if 30<pos[0]<464 and 25<pos[1]<459:
+                self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button2.png')
+                self.stand1_x = 2
+                if left:
+                    time.sleep(0.1)
+                    print("Spielstand1")
+            else:
+                self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button1.png')
+                self.stand1_x = 30
+            
+            if 541<pos[0]<975 and 25<pos[1]<459:
+                self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button2.png')
+                self.stand2_x = 513
+                if left:
+                    time.sleep(0.1)
+                    print("Spielstand2")
+            else:
+                self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button1.png')
+                self.stand2_x = 541
+            
+            if 300<pos[0]<700 and 740<pos[1]<840:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
+                self.zurück_x = 290
+                if left:
+                    time.sleep(0.1)
+                    self.stage = 2
+            else:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
+                self.zurück_x = 300
+
+        elif self.stage == 5:
+            if 276<pos[0]<724 and 300<pos[1]<398:
+                self.speichern = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern Button2.png')
+                self.speichern_x = 263
+                if left:
+                    time.sleep(0.1)
+                    print("Speichern")
+            else:
+                self.speichern = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern Button1.png')
+                self.speichern_x = 276
+
+            if 276<pos[0]<724 and 420<pos[1]<518:
+                self.speichern_verlassen = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern und Verlassen Button2.png')
+                self.speichern_verlassen_x = 263
+                if left:
+                    time.sleep(0.1)
+                    print("Speichern und Verlassen")
+            else:
+                self.speichern_verlassen = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern und Verlassen Button1.png')
+                self.speichern_verlassen_x = 276
+
+            if 300<pos[0]<700 and 740<pos[1]<840:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
+                self.zurück_x = 290
+                if left:
+                    time.sleep(0.1)
+                    self.stage = 0
+            else:
+                self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
+                self.zurück_x = 300
 
 background=Background()
 
@@ -407,74 +659,104 @@ enemy1=Enemy1()
 boss1=Boss1()
 boss2=Boss2()
 
+menu = Menu()
+
 clock=pygame.time.Clock()
 key='' #Für die Inputs
 
 while player.health>0:
 
-    background.print()
+    if menu.menu:
+        background.print()
+        menu.print()
 
-    player.print()
-    player.walk(key)
-    player.animation(key)
-    if player.is_attacking:
-        player.arm+=1
-        boss1.health=player.attack(boss1.x, boss1.y, boss1.health, '10')
-        boss1.health=player.attack(boss2.x, boss2.y, boss2.health, '20')
-        enemy1.health=player.attack(enemy1.x, enemy1.y, enemy1.health, '1')
+        if menu.stage == 0:
+            menu.menu = False
+
+        for event in pygame.event.get():
+
+            menu.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos())
+
+            if event.type == QUIT:
+                player.health=0
+
+        clock.tick(30)
+        pygame.display.flip()
+
     else:
-        player.arm=5
+        background.print()
 
-    enemy1.print()
-    enemy1.walk(key, background.x, background.y)
-    enemy1.walk_animation()
-    player.health=enemy1.attack(player.health)
-    enemy1.attack_animation()
-    if enemy1.health<=0:
-        enemy1.x=300
-        enemy1.y=-100
-        enemy1.health=5
-
-    #if boss1.health>0:
-    #    boss1.print()
-    #    boss1.walk(key, background.x, background.y)
-    #    boss1.walk_animation()
-
-    #if boss2.health>0:
-    #    boss2.print()
-    #    boss2.walk(key, background.x, background.y)
-
-    for event in pygame.event.get():
-
-        if event.type == KEYDOWN:
-
-            if event.key == K_w:
-                key+='w'
-            if event.key == K_s:
-                key+='s'
-            if event.key == K_a:
-                key+='a'
-            if event.key == K_d:
-                key+='d'
-
-        if event.type == KEYUP:
-            if event.key == K_w:
-                key=key_not_input(key, 'w')
-            if event.key == K_s:
-                key=key_not_input(key, 's')
-            if event.key == K_a:
-                key=key_not_input(key, 'a')
-            if event.key == K_d:
-                key=key_not_input(key, 'd')
-
-        if event.type == QUIT:
-            player.health=0
-
-        if pygame.mouse.get_pressed()[0]:
-            player.is_attacking=True
+        player.print()
+        player.walk(key)
+        player.animation(key)
+        if player.is_attacking:
+            player.arm+=1
+            boss1.health = player.attack(boss1.x, boss1.y, boss1.health, '10')
+            boss2.health = player.attack(boss2.x, boss2.y, boss2.health, '20')
+            enemy1.health = player.attack(enemy1.x, enemy1.y, enemy1.health, '1')
         else:
-            player.is_attacking=False
+            player.arm=5
+
+        enemy1.print()
+        enemy1.walk(key, background.x, background.y)
+        enemy1.walk_animation()
+        player.health=enemy1.attack(player.health)
+        enemy1.attack_animation()
+        if enemy1.health<=0:
+            enemy1.x=300
+            enemy1.y=-100
+            enemy1.health=5
+
+        if boss1.health>0:
+            boss1.print()
+            boss1.walk(key, background.x, background.y)
+            boss1.walk_animation()
+            player.health = boss1.attack(player.health)
+            boss1.attack_animation()
+
+        if boss2.health>0:
+            boss2.print()
+            boss2.walk(key, background.x, background.y)
+            boss2.walk_animation()
+            player.health = boss2.attack(player.health)
+            boss2.attack_animation()
+
+        for event in pygame.event.get():
+
+            if event.type == KEYDOWN:
+
+                if event.key == K_ESCAPE:
+                    menu.menu = True
+
+                if event.key == K_w:
+                    key+='w'
+                if event.key == K_s:
+                    key+='s'
+                if event.key == K_a:
+                    key+='a'
+                if event.key == K_d:
+                    key+='d'
+
+            if event.type == KEYUP:
+                if event.key == K_w:
+                    key=key_not_input(key, 'w')
+                if event.key == K_s:
+                    key=key_not_input(key, 's')
+                if event.key == K_a:
+                    key=key_not_input(key, 'a')
+                if event.key == K_d:
+                    key=key_not_input(key, 'd')
+
+            if event.type == QUIT:
+                player.health=0
+
+            if pygame.mouse.get_pressed()[0]:
+                player.is_attacking=True
+            else:
+                player.is_attacking=False
 
 
-    clock.tick(30)
-    pygame.display.flip()
+        clock.tick(30)
+        pygame.display.flip()
+        
+pygame.quit()

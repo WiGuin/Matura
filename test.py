@@ -758,3 +758,5 @@ while player.health>0:
 
         clock.tick(30)
         pygame.display.flip()
+        
+pygame.quit()
