@@ -25,18 +25,31 @@ class Player(pygame.sprite.Sprite):
         self.face='right'
         self.leg=10 #Für die Walking-Animation
         self.health=10
-        self.arm=5
+        self.arm=10
         self.is_attacking=False
-        self.inventory=['5','']
+        self.inventory=['1','1']
         self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character1'+s+'character1_'+self.inventory[0]+'_0.png')
         self.surf=pygame.transform.scale(self.surf, (125,125))
         self.x=438
         self.y=438
         self.font=pygame.font.Font('freesansbold.ttf', 32)
         self.stage = 1
+        self.shield = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Items'+s+'Schild_'+self.inventory[1]+'.png')
+        self.shield = pygame.transform.scale(self.shield, (100,100))
+        self.block = False
 
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
+        if self.block:
+            if self.face=='right':
+                screen.blit(self.shield, (446,455))
+            else:
+                screen.blit(self.shield, (453,455))
+        else:
+            if self.face=='right':
+                screen.blit(self.shield, (430,455))
+            else:
+                screen.blit(self.shield, (468,455))
         screen.blit(self.font.render('HP: '+str(self.health), True, (255,255,255)), (5,5))
 
     def walk(self, key):
@@ -102,30 +115,30 @@ class Player(pygame.sprite.Sprite):
             if self.arm==0:
                 if self.face=='right':
                     if 463<x<608 and 360<y<500:
-                        gegner_leben-=1
+                        gegner_leben-=int(self.inventory[0])
                 if self.face=='left':
                     if 392<x<510 and 360<y<500:
-                        gegner_leben-=1
+                        gegner_leben-=int(self.inventory[0])
         if type=='10':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
                     if 350<x<595 and 170<y<500:
-                        gegner_leben-=1
+                        gegner_leben-=int(self.inventory[0])
                 if self.face=='left':
                     if 225<x<470 and 170<y<500:
-                        gegner_leben-=1
+                        gegner_leben-=int(self.inventory[0])
         if type=='20':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
                     if 260<x<620 and 165<y<500:
-                        gegner_leben-=1
+                        gegner_leben-=int(self.inventory[0])
                 if self.face=='left':
                     if 150<x<520 and 165<y<500:
-                        gegner_leben-=1
+                        gegner_leben-=int(self.inventory[0])
         return(gegner_leben)
 
     def animation(self, key):
@@ -249,11 +262,14 @@ class Enemy1(pygame.sprite.Sprite):
         self.surf=pygame.transform.scale(self.surf, (75,75))
         self.leg+=1
 
-    def attack(self, player_health):
+    def attack(self, player_health, block, shield):
         if 530>self.x and self.x>400 and 545>self.y and self.y>370:
             if self.arm>=30:
                 self.arm=0
-                player_health-=1
+                if block and (1-shield) >= 0:
+                    player_health-=(1-shield)
+                else:
+                    player_health-=1
             self.arm+=1
         else:
             self.arm=20
@@ -347,11 +363,14 @@ class Boss1(pygame.sprite.Sprite):
                 self.surf=pygame.transform.flip(self.surf, True, False)
             self.leg+=1
 
-    def attack(self, player_health):
+    def attack(self, player_health, block, shield):
         if 600>self.x>120 and 545>self.y>370:
             if self.arm>=40:
                 self.arm=0
-                player_health-=2
+                if block and (2-shield) >= 0:
+                    player_health-=(2-shield)
+                else:
+                    player_health-=2
             self.arm+=1
         else:
             self.arm=20
@@ -431,12 +450,18 @@ class Boss2(pygame.sprite.Sprite):
             self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Boss2'+s+'Bossgegner2_Walk2.png')
         self.leg+=1
 
-    def attack(self, player_health):
+    def attack(self, player_health, block, shield):
         if 550>self.x>150 and 550>self.y>200:
             if self.arm == 55:
-                player_health-=2
+                if block and (2-shield) >= 0:
+                    player_health-=(2-shield)
+                else:
+                    player_health-=2
             elif self.arm == 60:
-                player_health-=2
+                if block and (2-shield) >= 0:
+                    player_health-=(2-shield)
+                else:
+                    player_health-=2
             elif self.arm >= 65:
                 self.arm = 0
             self.arm+=1
@@ -668,7 +693,6 @@ game = True
 while game:
 
     if menu.menu:
-        player.health = 10
         background.print()
         menu.print()
 
@@ -699,7 +723,7 @@ while game:
         enemy1.print()
         enemy1.walk(key, background.x, background.y)
         enemy1.walk_animation()
-        player.health=enemy1.attack(player.health)
+        player.health=enemy1.attack(player.health, player.block, int(player.inventory[1]))
         enemy1.attack_animation()
         if enemy1.health<=0:
             enemy1.x=300
@@ -708,29 +732,30 @@ while game:
         if player.is_attacking:
             enemy1.health = player.attack(enemy1.x, enemy1.y, enemy1.health, '1')
 
-        if boss1.health>0:
-            boss1.print()
-            boss1.walk(key, background.x, background.y)
-            boss1.walk_animation()
-            player.health = boss1.attack(player.health)
-            boss1.attack_animation()
-        if player.is_attacking:
-            boss1.health = player.attack(boss1.x, boss1.y, boss1.health, '10')
+        # if boss1.health>0:
+        #     boss1.print()
+        #     boss1.walk(key, background.x, background.y)
+        #     boss1.walk_animation()
+        #     player.health = boss1.attack(player.health, player.block, int(player.inventory[1]))
+        #     boss1.attack_animation()
+        # if player.is_attacking:
+        #     boss1.health = player.attack(boss1.x, boss1.y, boss1.health, '10')
 
-        if boss2.health>0:
-            boss2.print()
-            boss2.walk(key, background.x, background.y)
-            boss2.walk_animation()
-            player.health = boss2.attack(player.health)
-            boss2.attack_animation()
-        if player.is_attacking:
-            boss2.health = player.attack(boss2.x, boss2.y, boss2.health, '20')
+        # if boss2.health>0:
+        #     boss2.print()
+        #     boss2.walk(key, background.x, background.y)
+        #     boss2.walk_animation()
+        #     player.health = boss2.attack(player.health, player.block, int(player.inventory[1]))
+        #     boss2.attack_animation()
+        # if player.is_attacking:
+        #     boss2.health = player.attack(boss2.x, boss2.y, boss2.health, '20')
 
         for event in pygame.event.get():
 
             if event.type == KEYDOWN:
 
                 if event.key == K_ESCAPE:
+                    menu.stage = 5
                     menu.menu = True
 
                 if event.key == K_w:
@@ -753,12 +778,17 @@ while game:
                     key=key_not_input(key, 'd')
 
             if event.type == QUIT:
-                game
+                game = False
 
             if pygame.mouse.get_pressed()[0]:
                 player.is_attacking=True
             else:
                 player.is_attacking=False
+            
+            if pygame.mouse.get_pressed()[2]:
+                player.block = True
+            else:
+                player.block = False
 
         if player.health <= 0:
             menu.stage = 2
