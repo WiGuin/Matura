@@ -46,6 +46,8 @@ class Player(pygame.sprite.Sprite):
         self.ability_y = 500
         self.ability_direction = None
         self.ability_cooldown = 0
+        self.coin = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Shop'+s+'Coins.png')
+        self.coin_count = 0
 
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
@@ -61,6 +63,13 @@ class Player(pygame.sprite.Sprite):
             else:
                 screen.blit(self.shield, (468,455))
         screen.blit(self.font.render('HP: '+str(self.health), True, (255,255,255)), (5,5))
+        screen.blit(self.coin, (925,25))
+        if self.coin_count < 10:
+            screen.blit(self.font.render(str(self.coin_count), True, (255,255,255)), (890,35))
+        elif self.coin_count < 100:
+            screen.blit(self.font.render(str(self.coin_count), True, (255,255,255)), (870,35))
+        else:
+            screen.blit(self.font.render(str(self.coin_count), True, (255,255,255)), (850,35))
 
     def walk(self, key):
         if key=='w' or key=='wad' or key=='wda' or key=='awd' or key=='adw' or key=='daw' or key=='dwa':
@@ -199,7 +208,33 @@ class Player(pygame.sprite.Sprite):
             self.surf=pygame.transform.flip(self.surf, True, False)
         self.leg+=1
 
-    def ability(self, key, x, y, enemy_health):
+    def ability(self, x, y, enemy_health):
+        if self.character == 1:
+            if 0 < self.ability_true < 70:
+
+                if self.ability_cooldown == 0:
+                    if abs(self.ability_x-x)<50 and abs(self.ability_y-y)<50:
+                        enemy_health-=1
+                        self.ability_cooldown += 1
+                elif self.ability_cooldown < 150:
+                    self.ability_cooldown += 1
+                else:
+                    self.ability_cooldown = 0
+
+
+            if self.ability_true == 70:
+                self.ability_x = 500
+                self.ability_y = 500
+                self.ability_cooldown = 0
+                self.ability_true = 0
+        
+        if self.character == 2:
+            if 0 < self.ability_true < 40:
+                self.ability_true += 1
+
+        return(enemy_health)
+
+    def ability_animation(self, key):
         if self.character == 1:
             if 0 < self.ability_true < 70:
 
@@ -231,23 +266,8 @@ class Player(pygame.sprite.Sprite):
                     screen.blit(pygame.transform.flip(self.fireball, True, False), (self.ability_x,self.ability_y))
                     self.ability_x -= 10
 
-                if self.ability_cooldown == 0:
-                    if abs(self.ability_x-x)<50 and abs(self.ability_y-y)<50:
-                        enemy_health-=1
-                        self.ability_cooldown += 1
-                elif self.ability_cooldown < 150:
-                    self.ability_cooldown += 1
-                else:
-                    self.ability_cooldown = 0
-
                 self.ability_true += 1
 
-            if self.ability_true == 70:
-                self.ability_x = 500
-                self.ability_y = 500
-                self.ability_cooldown = 0
-                self.ability_true = 0
-        
         if self.character == 2:
             if 0 < self.ability_true < 40:
                 screen.blit(self.heal, (438,438))
@@ -261,10 +281,9 @@ class Player(pygame.sprite.Sprite):
             if self.ability_true == 750:
                 self.ability_true = 0
 
-        return(enemy_health)
-
 class Enemy1(pygame.sprite.Sprite):
     def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
         self.surf=pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Goblin'+s+'Goblin_1.png')
         self.surf=pygame.transform.scale(self.surf, (75,75))
         self.face='left'
@@ -272,8 +291,9 @@ class Enemy1(pygame.sprite.Sprite):
         self.arm=20 #Für die Attacken
         self.attack_clock=0 #Für die Attack-animation
         self.health=5
-        self.x=750
-        self.y=100
+        self.x=random.randint(-2000,2000)
+        self.y=random.randint(-2000,2000)
+        self.type='1'
 
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
@@ -361,6 +381,17 @@ class Enemy1(pygame.sprite.Sprite):
                 self.surf=pygame.transform.flip(self.surf, True, False)
             self.surf=pygame.transform.scale(self.surf, (75,75))
             self.attack_clock+=1
+
+    def death(self):
+        if self.health <= 0:
+            self.kill()
+
+    def update(self, key, x, y):
+        self.print()
+        self.walk(key, x, y)
+        self.walk_animation()
+        self.attack_animation()
+        self.death()
 
 class Boss1(pygame.sprite.Sprite):
     def __init__(self):
@@ -752,19 +783,30 @@ class Menu(pygame.sprite.Sprite):
 class Shop(pygame.sprite.Sprite):
     def __init__(self):
         self.surf = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Shop'+s+'Shop_0_0.png')
+        self.coin = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Shop'+s+'Coins.png')
+        self.font = pygame.font.Font('freesansbold.ttf', 50)
         self.choice_cooldown = False
-        self.shop = False
+        self.shop = True
         self.bought = False
         self.item_0_x = 480
         self.item_0_y = 360
         self.item_1_x = 400
         self.item_1_y = 360
+        self.coins = 0
     
-    def print(self):
+    def print(self, player_coins):
         screen.blit(self.surf, (200,200))
-        if self.bought:
-            pass
+
+        self.coins = player_coins
+
+        if self.coins < 10:
+            screen.blit(self.font.render(str(self.coins), True, (255,255,255)), (655,230))
+        elif self.coins < 100:
+            screen.blit(self.font.render(str(self.coins), True, (255,255,255)), (620,230))
         else:
+            screen.blit(self.font.render(str(self.coins), True, (255,255,255)), (595,230))
+
+        if self.bought != True:
             if self.type == 0:
                 screen.blit(self.item, (self.item_0_x, self.item_0_y))
             else:
@@ -782,10 +824,9 @@ class Shop(pygame.sprite.Sprite):
             self.item_0_y = 370
             self.item_1_x = 390
             self.item_1_y = 370
-            if left:
-                if self.bought == False:
-                    self.bought = True
-                    return(True)
+            if left and self.bought == False and self.coins >= 20:
+                self.bought = True
+                return(True)
         
         else:
             self.surf = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Shop'+s+'Shop_0_0.png')
@@ -806,6 +847,27 @@ class Shop(pygame.sprite.Sprite):
                 self.item = pygame.transform.scale(self.item, (200,200))
                 self.item_number = str(int(inventory[self.type])+1)
             self.choice_cooldown = True
+
+
+SPAWN_ENEMY_1 = pygame.USEREVENT + 1
+pygame.time.set_timer(SPAWN_ENEMY_1, 4000)
+
+SPAWN_ENEMY_2 = pygame.USEREVENT + 1
+pygame.time.set_timer(SPAWN_ENEMY_2, 4000)
+
+SPAWN_ENEMY_3 = pygame.USEREVENT + 1
+pygame.time.set_timer(SPAWN_ENEMY_3, 8000)
+
+SPAWN_ENEMY_4 = pygame.USEREVENT + 1
+pygame.time.set_timer(SPAWN_ENEMY_4, 8000)
+
+SPAWN_ENEMY_5 = pygame.USEREVENT + 1
+pygame.time.set_timer(SPAWN_ENEMY_5, 15000)
+
+SPAWN_ENEMY_6 = pygame.USEREVENT + 1
+pygame.time.set_timer(SPAWN_ENEMY_6, 15000)
+
+enemies = pygame.sprite.Group()
 
 
 background=Background()
@@ -845,12 +907,13 @@ while game:
 
         if shop.shop:
             shop.choice(player.inventory)
-            shop.print()
+            shop.print(player.coin_count)
 
             for event in pygame.event.get():
 
                 if shop.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos()) != None:
                     player.inventory[shop.type] = shop.item_number
+                    player.coin_count -= 20
 
                     player.surf = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character'+str(player.character)+s+'character'+str(player.character)+'_'+player.inventory[0]+'_0.png')
                     player.surf = pygame.transform.scale(player.surf, (125,125))
@@ -864,23 +927,22 @@ while game:
             player.print()
             player.walk(key)
             player.animation(key)
+            player.ability_animation(key)
             if player.is_attacking:
                 player.arm+=1
             else:
                 player.arm=25
 
-            enemy1.print()
-            enemy1.walk(key, background.x, background.y)
-            enemy1.walk_animation()
-            player.health=enemy1.attack(player.health, player.block, int(player.inventory[1]))
-            enemy1.attack_animation()
-            if enemy1.health<=0:
-                enemy1.x=300
-                enemy1.y=-100
-                enemy1.health=5
-            if player.is_attacking:
-                enemy1.health = player.attack(enemy1.x, enemy1.y, enemy1.health, '1')
-            enemy1.health = player.ability(key, enemy1.x ,enemy1.y , enemy1.health)
+
+            enemies.update(key, background.x, background.y)
+
+            for single_enemy in enemies:
+
+                player.health = single_enemy.attack(player.health, player.block, int(player.inventory[1]))
+                if player.is_attacking:
+                    single_enemy.health = player.attack(single_enemy.x, single_enemy.y, single_enemy.health, single_enemy.type)
+                single_enemy.health = player.ability(single_enemy.x , single_enemy.y , single_enemy.health)
+
 
             # if boss1.health>0:
             #     boss1.print()
@@ -931,6 +993,10 @@ while game:
                         key=key_not_input(key, 'a')
                     if event.key == K_d:
                         key=key_not_input(key, 'd')
+
+                if event.type == SPAWN_ENEMY_1:
+                    enemy1 = Enemy1()
+                    enemies.add(enemy1)
 
                 if event.type == QUIT:
                     game = False
