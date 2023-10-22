@@ -1187,6 +1187,7 @@ class Menu(pygame.sprite.Sprite):
     def __init__(self):
         self.menu = True
         self.stage = 1
+        self.click_possible = True
 
         self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button1.png')
         self.start_x = 300
@@ -1251,7 +1252,6 @@ class Menu(pygame.sprite.Sprite):
                 self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button2.png')
                 self.start_x = 290
                 if left:
-                    time.sleep(0.25)
                     self.stage = 2
             else:
                 self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button1.png')
@@ -1262,7 +1262,6 @@ class Menu(pygame.sprite.Sprite):
                 self.neues_spiel = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Neues Spiel Button2.png')
                 self.neues_spiel_x = 291
                 if left:
-                    time.sleep(0.25)
                     self.stage = 3
             else:
                 self.neues_spiel = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Neues Spiel Button1.png')
@@ -1272,7 +1271,6 @@ class Menu(pygame.sprite.Sprite):
                 self.spiel_laden = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spiel Laden Button2.png')
                 self.spiel_laden_x = 290
                 if left:
-                    time.sleep(0.25)
                     self.stage = 4
             else:
                 self.spiel_laden = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spiel Laden Button1.png')
@@ -1282,7 +1280,6 @@ class Menu(pygame.sprite.Sprite):
                 self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
                 self.zurück_x = 290
                 if left:
-                    time.sleep(0.25)
                     self.stage = 1
             else:
                 self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
@@ -1293,7 +1290,6 @@ class Menu(pygame.sprite.Sprite):
                 self.char1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter1 Button2.png')
                 self.char1_x = 2
                 if left:
-                    time.sleep(0.25)
                     return(1)
             else:
                 self.char1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter1 Button1.png')
@@ -1303,7 +1299,6 @@ class Menu(pygame.sprite.Sprite):
                 self.char2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter2 Button2.png')
                 self.char2_x = 513
                 if left:
-                    time.sleep(0.25)
                     return(2)
             else:
                 self.char2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter2 Button1.png')
@@ -1313,7 +1308,6 @@ class Menu(pygame.sprite.Sprite):
                 self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
                 self.zurück_x = 290
                 if left:
-                    time.sleep(0.25)
                     self.stage = 2
             else:
                 self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
@@ -1324,7 +1318,6 @@ class Menu(pygame.sprite.Sprite):
                 self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button2.png')
                 self.stand1_x = 2
                 if left:
-                    time.sleep(0.25)
                     print("Spielstand1")
             else:
                 self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button1.png')
@@ -1334,7 +1327,6 @@ class Menu(pygame.sprite.Sprite):
                 self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button2.png')
                 self.stand2_x = 513
                 if left:
-                    time.sleep(0.25)
                     print("Spielstand2")
             else:
                 self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button1.png')
@@ -1344,7 +1336,6 @@ class Menu(pygame.sprite.Sprite):
                 self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
                 self.zurück_x = 290
                 if left:
-                    time.sleep(0.25)
                     self.stage = 2
             else:
                 self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
@@ -1355,7 +1346,6 @@ class Menu(pygame.sprite.Sprite):
                 self.speichern = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern Button2.png')
                 self.speichern_x = 263
                 if left:
-                    time.sleep(0.25)
                     print("Speichern")
             else:
                 self.speichern = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern Button1.png')
@@ -1365,7 +1355,6 @@ class Menu(pygame.sprite.Sprite):
                 self.speichern_verlassen = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern und Verlassen Button2.png')
                 self.speichern_verlassen_x = 263
                 if left:
-                    time.sleep(0.25)
                     print("Speichern und Verlassen")
             else:
                 self.speichern_verlassen = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern und Verlassen Button1.png')
@@ -1375,7 +1364,6 @@ class Menu(pygame.sprite.Sprite):
                 self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
                 self.zurück_x = 290
                 if left:
-                    time.sleep(0.25)
                     self.stage = 0
             else:
                 self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
@@ -1386,6 +1374,8 @@ class Shop(pygame.sprite.Sprite):
         self.surf = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Shop'+s+'Shop_0_0.png')
         self.coin = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Shop'+s+'Coins.png')
         self.font = pygame.font.Font('freesansbold.ttf', 50)
+        self.font2 = pygame.font.Font('freesansbold.ttf', 25)
+        self.coin2 = pygame.transform.scale(self.coin, (28,22))
         self.choice_cooldown = False
         self.shop = False
         self.bought = False
@@ -1393,6 +1383,10 @@ class Shop(pygame.sprite.Sprite):
         self.item_0_y = 360
         self.item_1_x = 400
         self.item_1_y = 360
+        self.price_x = 560
+        self.price_y = 550
+        self.price_coins_x = 595
+        self.price_coins_y = 550
         self.coins = 0
     
     def print(self, player_coins):
@@ -1412,6 +1406,8 @@ class Shop(pygame.sprite.Sprite):
                 screen.blit(self.item, (self.item_0_x, self.item_0_y))
             else:
                 screen.blit(self.item, (self.item_1_x, self.item_1_y))
+            screen.blit(self.coin2, (self.price_coins_x, self.price_coins_y))
+            screen.blit(self.font2.render('20', True, (255,255,255)), (self.price_x, self.price_y))
     
     def button(self, left, pos):
         if 388 < pos[0] < 611 and 681 < pos[1] < 749:
@@ -1425,6 +1421,10 @@ class Shop(pygame.sprite.Sprite):
             self.item_0_y = 370
             self.item_1_x = 390
             self.item_1_y = 370
+            self.price_x = 550
+            self.price_y = 560
+            self.price_coins_x = 585
+            self.price_coins_y = 560
             if left and self.bought == False and self.coins >= 20:
                 self.bought = True
                 return(True)
@@ -1435,10 +1435,18 @@ class Shop(pygame.sprite.Sprite):
             self.item_0_y = 360
             self.item_1_x = 400
             self.item_1_y = 360
+            self.price_x = 560
+            self.price_y = 550
+            self.price_coins_x = 595
+            self.price_coins_y = 550
     
     def choice(self, inventory):
         if self.choice_cooldown == False:
             self.type = random.randint(0, 1)
+            if inventory[0] == 5:
+                self.type = 1
+            elif inventory[1] == 5:
+                self.type = 0
             if self.type == 0:
                 self.item = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Items'+s+'Schwert '+str(int(inventory[self.type])+1)+'.png')
                 self.item = pygame.transform.scale(self.item, (43,200))
@@ -1451,25 +1459,27 @@ class Shop(pygame.sprite.Sprite):
 
 
 SPAWN_ENEMY_1 = pygame.USEREVENT + 1
-pygame.time.set_timer(SPAWN_ENEMY_1, 4000)
+pygame.time.set_timer(SPAWN_ENEMY_1, 5000)
 
-SPAWN_ENEMY_2 = pygame.USEREVENT + 1
-pygame.time.set_timer(SPAWN_ENEMY_2, 4000)
+SPAWN_ENEMY_2 = pygame.USEREVENT + 2
+pygame.time.set_timer(SPAWN_ENEMY_2, 5000)
 
-SPAWN_ENEMY_3 = pygame.USEREVENT + 1
-pygame.time.set_timer(SPAWN_ENEMY_3, 9500)
+SPAWN_ENEMY_3 = pygame.USEREVENT + 3
+pygame.time.set_timer(SPAWN_ENEMY_3, 15000)
 
-SPAWN_ENEMY_4 = pygame.USEREVENT + 1
-pygame.time.set_timer(SPAWN_ENEMY_4, 9500)
+SPAWN_ENEMY_4 = pygame.USEREVENT + 4
+pygame.time.set_timer(SPAWN_ENEMY_4, 15000)
 
-SPAWN_ENEMY_5 = pygame.USEREVENT + 1
-pygame.time.set_timer(SPAWN_ENEMY_5, 20000)
+SPAWN_ENEMY_5 = pygame.USEREVENT + 5
+pygame.time.set_timer(SPAWN_ENEMY_5, 30000)
 
-SPAWN_ENEMY_6 = pygame.USEREVENT + 1
-pygame.time.set_timer(SPAWN_ENEMY_6, 20000)
+SPAWN_ENEMY_6 = pygame.USEREVENT + 6
+pygame.time.set_timer(SPAWN_ENEMY_6, 30000)
+
+ROUND_TIMER_TICK = pygame.USEREVENT + 7
+pygame.time.set_timer(ROUND_TIMER_TICK, 1000)
 
 enemies = pygame.sprite.Group()
-
 
 background=Background()
 
@@ -1482,13 +1492,17 @@ boss2=Boss2()
 menu = Menu()
 shop = Shop()
 
-clock=pygame.time.Clock()
+clock = pygame.time.Clock()
 key='' #Für die Inputs
 game = True
+round_timer = 60
+font = pygame.font.Font('freesansbold.ttf', 80)
+font2 = pygame.font.Font('freesansbold.ttf', 30)
 
 while game:
 
     if menu.menu:
+        key=''
         background.print()
         menu.print()
 
@@ -1497,9 +1511,19 @@ while game:
 
         for event in pygame.event.get():
 
-            if menu.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos()) != None:
-                player = Player(menu.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos()))
-                menu.stage=0
+            if pygame.mouse.get_pressed()[0] == False:
+                menu.click_possible = True
+
+            if menu.click_possible:
+                if menu.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos()) != None:
+                    round_timer = 60
+                    background.x=-2000
+                    background.y=-2000
+                    player = Player(menu.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos()))
+                    menu.stage = 0
+
+            if pygame.mouse.get_pressed()[0]:
+                menu.click_possible = False
 
             if event.type == QUIT:
                 game = False
@@ -1508,6 +1532,7 @@ while game:
         background.print()
 
         if shop.shop:
+            key=''
             shop.choice(player.inventory)
             shop.print(player.coin_count)
 
@@ -1524,18 +1549,8 @@ while game:
 
                 if event.type == QUIT:
                     game = False
-            
+        
         else:
-            player.print()
-            player.walk(key)
-            player.animation(key)
-            player.ability_animation(key)
-            if player.is_attacking:
-                player.arm+=1
-            else:
-                player.arm=25
-
-
             enemies.update(key, background.x, background.y)
 
             for single_enemy in enemies:
@@ -1559,20 +1574,51 @@ while game:
                     boss1.walk_animation()
                     player.health = boss1.attack(player.health, player.block, int(player.inventory[1]))
                     boss1.attack_animation()
+                else:
+                    time.sleep(1)
+                    player.coin_count += 15
+                    player.stage += 1
+                    shop.shop = True
                 if player.is_attacking:
                     boss1.health = player.attack(boss1.x, boss1.y, boss1.health, boss1.type)
                 boss1.health = player.ability(key, boss1.x ,boss1.y , boss1.health)
 
-            if player.stage == 11:
+            elif player.stage == 11:
                 if boss2.health>0:
                     boss2.print()
                     boss2.walk(key, background.x, background.y)
                     boss2.walk_animation()
                     player.health = boss2.attack(player.health, player.block, int(player.inventory[1]))
                     boss2.attack_animation()
+                else:
+                    time.sleep(1)
+                    menu.stage = 1
+                    menu.menu = True
                 if player.is_attacking:
                     boss2.health = player.attack(boss2.x, boss2.y, boss2.health, boss2.type)
                 boss2.health = player.ability(key, boss2.x ,boss2.y , boss2.health)
+
+            else:
+                if round_timer > 0:
+                    screen.blit(font.render(str(round_timer), True, (255,255,255)), (460,5))
+
+                if round_timer == 0:
+                    for enemy in enemies:
+                        enemy.kill()
+                    round_timer = 60
+                    player.stage += 1
+                    shop.shop = True
+
+            player.print()
+            player.walk(key)
+            player.animation(key)
+            player.ability_animation(key)
+            if player.is_attacking:
+                player.arm+=1
+            else:
+                player.arm=25
+            
+            screen.blit(font2.render('Stage: '+str(player.stage), True, (255,255,255)), (460,950))
 
             for event in pygame.event.get():
 
@@ -1604,28 +1650,37 @@ while game:
                         key=key_not_input(key, 'd')
 
                 if event.type == SPAWN_ENEMY_1:
-                    enemy1 = Enemy1()
-                    enemies.add(enemy1)
+                    if player.stage != 6 and player.stage != 11:
+                        enemy1 = Enemy1()
+                        enemies.add(enemy1)
 
                 if event.type == SPAWN_ENEMY_2:
-                    enemy2 = Enemy2()
-                    enemies.add(enemy2)
+                    if player.stage != 6 and player.stage != 11:
+                        enemy2 = Enemy2()
+                        enemies.add(enemy2)
 
                 if event.type == SPAWN_ENEMY_3:
-                    enemy3 = Enemy3()
-                    enemies.add(enemy3)
+                    if player.stage != 6 and player.stage != 11:
+                        enemy3 = Enemy3()
+                        enemies.add(enemy3)
 
                 if event.type == SPAWN_ENEMY_4:
-                    enemy4 = Enemy4()
-                    enemies.add(enemy4)
+                    if player.stage != 6 and player.stage != 11:
+                        enemy4 = Enemy4()
+                        enemies.add(enemy4)
 
                 if event.type == SPAWN_ENEMY_5:
-                    enemy5 = Enemy5()
-                    enemies.add(enemy5)
+                    if player.stage != 6 and player.stage != 11:
+                        enemy5 = Enemy5()
+                        enemies.add(enemy5)
 
                 if event.type == SPAWN_ENEMY_6:
-                    enemy6 = Enemy6()
-                    enemies.add(enemy6)
+                    if player.stage != 6 and player.stage != 11:
+                        enemy6 = Enemy6()
+                        enemies.add(enemy6)
+
+                if event.type == ROUND_TIMER_TICK:
+                    round_timer -= 1
 
                 if event.type == QUIT:
                     game = False
