@@ -1406,7 +1406,7 @@ class Menu(pygame.sprite.Sprite):
                             save1.close()
                             enemies.add(enemy)
                         
-                        save1 = open("Save1.txt","w")
+                        save1 = open("Save1.txt","r")
                         player.round_timer = int(save1.readlines()[-1])
                         save1.close()
 
@@ -1512,7 +1512,7 @@ class Menu(pygame.sprite.Sprite):
                             save2.close()
                             enemies.add(enemy)
                         
-                        save2 = open("Save2.txt","w")
+                        save2 = open("Save2.txt","r")
                         player.round_timer = int(save2.readlines()[-1])
                         save2.close()
 

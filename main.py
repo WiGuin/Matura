@@ -48,6 +48,7 @@ class Player(pygame.sprite.Sprite):
         self.ability_cooldown = 0
         self.coin = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Shop'+s+'Coins.png')
         self.coin_count = 0
+        self.round_timer = 60
 
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
@@ -1246,7 +1247,7 @@ class Menu(pygame.sprite.Sprite):
             screen.blit(self.speichern_verlassen, (self.speichern_verlassen_x, self.speichern_verlassen_y))
             screen.blit(self.zurück, (self.zurück_x, self.zurück_y))
 
-    def button(self, left, pos):
+    def button(self, left, pos, player_info, enemies_info, background_info, boss1_info, boss2_info):
         if self.stage == 1:
             if 300<pos[0]<700 and 450<pos[1]<550:
                 self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button2.png')
@@ -1318,7 +1319,104 @@ class Menu(pygame.sprite.Sprite):
                 self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button2.png')
                 self.stand1_x = 2
                 if left:
-                    print("Spielstand1")
+                    save1 = open("Save1.txt","r")
+                    if save1.read() != '':
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+                        player.character = str(save1.readlines()[0][0])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+                        player.health = int(save1.readlines()[1][:-1])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+                        player.inventory = [save1.readlines()[2][2]]
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+                        player.inventory.append(save1.readlines()[2][7])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+                        player.coin_count = int(save1.readlines()[3][:-1])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+                        player.stage = int(save1.readlines()[4][:-1])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+
+                        background.x = float(save1.readlines()[5][:-1])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+                        background.y = float(save1.readlines()[6][:-1])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+
+                        boss1.health = int(save1.readlines()[7][:-1])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+                        boss1.x = float(save1.readlines()[8][:-1])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+                        boss1.y = float(save1.readlines()[9][:-1])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+
+                        boss2.health = int(save1.readlines()[10][:-1])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+                        boss2.x = float(save1.readlines()[11][:-1])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+                        boss2.y = float(save1.readlines()[12][:-1])
+                        save1.close()
+                        save1 = open("Save1.txt","r")
+
+                        for i in range(int(save1.readlines()[13][:-1])):
+                            save1.close()
+                            save1 = open("Save1.txt","r")
+                            if int(save1.readlines()[14+4*i][:-1]) == 1:
+                                enemy = Enemy1()
+                            save1.close()
+                            save1 = open("Save1.txt","r")
+                            if int(save1.readlines()[14+4*i][:-1]) == 2:
+                                enemy = Enemy2()
+                            save1.close()
+                            save1 = open("Save1.txt","r")
+                            if int(save1.readlines()[14+4*i][:-1]) == 3:
+                                enemy = Enemy3()
+                            save1.close()
+                            save1 = open("Save1.txt","r")
+                            if int(save1.readlines()[14+4*i][:-1]) == 4:
+                                enemy = Enemy4()
+                            save1.close()
+                            save1 = open("Save1.txt","r")
+                            if int(save1.readlines()[14+4*i][:-1]) == 5:
+                                enemy = Enemy5()
+                            save1.close()
+                            save1 = open("Save1.txt","r")
+                            if int(save1.readlines()[14+4*i][:-1]) == 6:
+                                enemy = Enemy6() 
+                            save1.close()
+                            save1 = open("Save1.txt","r")
+                            enemy.health = int(save1.readlines()[15+4*i][:-1])
+                            save1.close()
+                            save1 = open("Save1.txt","r")
+                            enemy.x = float(save1.readlines()[16+4*i][:-1])
+                            save1.close()
+                            save1 = open("Save1.txt","r")
+                            enemy.y = float(save1.readlines()[17+4*i][:-1])
+                            save1.close()
+                            enemies.add(enemy)
+                        
+                        save1 = open("Save1.txt","r")
+                        player.round_timer = int(save1.readlines()[-1])
+                        save1.close()
+
+                        save1 = open("Save1.txt","w")
+                        save1.write("")
+                        save1.close()
+                        self.stage = 0
+                        self.menu = False
+                    else:
+                        save1.close()
             else:
                 self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button1.png')
                 self.stand1_x = 30
@@ -1327,7 +1425,104 @@ class Menu(pygame.sprite.Sprite):
                 self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button2.png')
                 self.stand2_x = 513
                 if left:
-                    print("Spielstand2")
+                    save2 = open("Save2.txt","r")
+                    if save2.read() != '':
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+                        player.character = str(save2.readlines()[0][0])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+                        player.health = int(save2.readlines()[1][:-1])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+                        player.inventory = [save2.readlines()[2][2]]
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+                        player.inventory.append(save2.readlines()[2][7])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+                        player.coin_count = int(save2.readlines()[3][:-1])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+                        player.stage = int(save2.readlines()[4][:-1])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+
+                        background.x = float(save2.readlines()[5][:-1])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+                        background.y = float(save2.readlines()[6][:-1])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+
+                        boss1.health = int(save2.readlines()[7][:-1])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+                        boss1.x = float(save2.readlines()[8][:-1])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+                        boss1.y = float(save2.readlines()[9][:-1])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+
+                        boss2.health = int(save2.readlines()[10][:-1])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+                        boss2.x = float(save2.readlines()[11][:-1])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+                        boss2.y = float(save2.readlines()[12][:-1])
+                        save2.close()
+                        save2 = open("Save2.txt","r")
+
+                        for i in range(int(save2.readlines()[13][:-1])):
+                            save2.close()
+                            save2 = open("Save2.txt","r")
+                            if int(save2.readlines()[14+4*i][:-1]) == 1:
+                                enemy = Enemy1()
+                            save2.close()
+                            save2 = open("Save2.txt","r")
+                            if int(save2.readlines()[14+4*i][:-1]) == 2:
+                                enemy = Enemy2()
+                            save2.close()
+                            save2 = open("Save2.txt","r")
+                            if int(save2.readlines()[14+4*i][:-1]) == 3:
+                                enemy = Enemy3()
+                            save2.close()
+                            save2 = open("Save2.txt","r")
+                            if int(save2.readlines()[14+4*i][:-1]) == 4:
+                                enemy = Enemy4()
+                            save2.close()
+                            save2 = open("Save2.txt","r")
+                            if int(save2.readlines()[14+4*i][:-1]) == 5:
+                                enemy = Enemy5()
+                            save2.close()
+                            save2 = open("Save2.txt","r")
+                            if int(save2.readlines()[14+4*i][:-1]) == 6:
+                                enemy = Enemy6()
+                            save2.close()
+                            save2 = open("Save2.txt","r")
+                            enemy.health = int(save2.readlines()[15+4*i][:-1])
+                            save2.close()
+                            save2 = open("Save2.txt","r")
+                            enemy.x = float(save2.readlines()[16+4*i][:-1])
+                            save2.close()
+                            save2 = open("Save2.txt","r")
+                            enemy.y = float(save2.readlines()[17+4*i][:-1])
+                            save2.close()
+                            enemies.add(enemy)
+                        
+                        save2 = open("Save2.txt","r")
+                        player.round_timer = int(save2.readlines()[-1])
+                        save2.close()
+
+                        save2 = open("Save2.txt","w")
+                        save2.write("")
+                        save2.close()
+                        self.stage = 0
+                        self.menu = False
+                    else:
+                        save2.close()
             else:
                 self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button1.png')
                 self.stand2_x = 541
@@ -1346,7 +1541,37 @@ class Menu(pygame.sprite.Sprite):
                 self.speichern = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern Button2.png')
                 self.speichern_x = 263
                 if left:
-                    print("Speichern")
+                    save1 = open("Save1.txt","r")
+                    save2 = open("Save2.txt","r")
+                    if save1.read() == '':
+                        save1.close()
+                        save2.close()
+                        save1 = open("Save1.txt","w")
+                        save1.writelines([str(player_info.character)+"\n", str(player_info.health)+"\n", str(player_info.inventory)+"\n", str(player_info.coin_count)+"\n", str(player_info.stage)+"\n", str(background_info.x)+"\n", str(background_info.y)+"\n", str(boss1_info.health)+"\n", str(boss1_info.x)+"\n", str(boss1_info.y)+"\n", str(boss2_info.health)+"\n", str(boss2_info.x)+"\n", str(boss2_info.y)+"\n", str(len(enemies_info))+"\n"])
+                        save1.close()
+                        save1 = open("Save1.txt","a")
+                        for enemy in enemies_info:
+                            save1.writelines([str(enemy.__class__)[-3:-2]+"\n", str(enemy.health)+"\n", str(enemy.x)+"\n", str(enemy.y)+"\n"])
+                        save1.close()
+                        save1 = open("Save1.txt","a")
+                        save1.write(str(player_info.round_timer))
+                        save1.close()
+                    elif save2.read() == '':
+                        save1.close()
+                        save2.close()
+                        save2 = open("Save2.txt","w")
+                        save2.writelines([str(player_info.character)+"\n", str(player_info.health)+"\n", str(player_info.inventory)+"\n", str(player_info.coin_count)+"\n", str(player_info.stage)+"\n", str(background_info.x)+"\n", str(background_info.y)+"\n", str(boss1_info.health)+"\n", str(boss1_info.x)+"\n", str(boss1_info.y)+"\n", str(boss2_info.health)+"\n", str(boss2_info.x)+"\n", str(boss2_info.y)+"\n", str(len(enemies_info))+"\n"])
+                        save2.close()
+                        save2 = open("Save2.txt","a")
+                        for enemy in enemies_info:
+                            save2.writelines([str(enemy.__class__)[-3:-2]+"\n", str(enemy.health)+"\n", str(enemy.x)+"\n", str(enemy.y)+"\n"])
+                        save2.close()
+                        save2 = open("Save2.txt","a")
+                        save2.write(str(player_info.round_timer))
+                        save2.close()
+                    else:
+                        save1.close()
+                        save2.close()
             else:
                 self.speichern = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern Button1.png')
                 self.speichern_x = 276
@@ -1355,7 +1580,38 @@ class Menu(pygame.sprite.Sprite):
                 self.speichern_verlassen = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern und Verlassen Button2.png')
                 self.speichern_verlassen_x = 263
                 if left:
-                    print("Speichern und Verlassen")
+                    save1 = open("Save1.txt","r")
+                    save2 = open("Save2.txt","r")
+                    if save1.read() == '':
+                        save1.close()
+                        save2.close()
+                        save1 = open("Save1.txt","w")
+                        save1.writelines([str(player_info.character)+"\n", str(player_info.health)+"\n", str(player_info.inventory)+"\n", str(player_info.coin_count)+"\n", str(player_info.stage)+"\n", str(background_info.x)+"\n", str(background_info.y)+"\n", str(boss1_info.health)+"\n", str(boss1_info.x)+"\n", str(boss1_info.y)+"\n", str(boss2_info.health)+"\n", str(boss2_info.x)+"\n", str(boss2_info.y)+"\n", str(len(enemies_info))+"\n"])
+                        save1.close()
+                        save1 = open("Save1.txt","a")
+                        for enemy in enemies_info:
+                            save1.writelines([str(enemy.__class__)[-3:-2]+"\n", str(enemy.health)+"\n", str(enemy.x)+"\n", str(enemy.y)+"\n"])
+                        save1.close()
+                        save1 = open("Save1.txt","a")
+                        save1.write(str(player_info.round_timer))
+                        save1.close()
+                    elif save2.read() == '':
+                        save1.close()
+                        save2.close()
+                        save2 = open("Save2.txt","w")
+                        save2.writelines([str(player_info.character)+"\n", str(player_info.health)+"\n", str(player_info.inventory)+"\n", str(player_info.coin_count)+"\n", str(player_info.stage)+"\n", str(background_info.x)+"\n", str(background_info.y)+"\n", str(boss1_info.health)+"\n", str(boss1_info.x)+"\n", str(boss1_info.y)+"\n", str(boss2_info.health)+"\n", str(boss2_info.x)+"\n", str(boss2_info.y)+"\n", str(len(enemies_info))+"\n"])
+                        save2.close()
+                        save2 = open("Save2.txt","a")
+                        for enemy in enemies_info:
+                            save2.writelines([str(enemy.__class__)[-3:-2]+"\n", str(enemy.health)+"\n", str(enemy.x)+"\n", str(enemy.y)+"\n"])
+                        save2.close()
+                        save2 = open("Save2.txt","a")
+                        save2.write(str(player_info.round_timer))
+                        save2.close()
+                    else:
+                        save1.close()
+                        save2.close()
+                    self.stage = 2
             else:
                 self.speichern_verlassen = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Speichern und Verlassen Button1.png')
                 self.speichern_verlassen_x = 276
@@ -1481,6 +1737,8 @@ pygame.time.set_timer(ROUND_TIMER_TICK, 1000)
 
 enemies = pygame.sprite.Group()
 
+player = Player(1)
+
 background=Background()
 
 enemy1=Enemy1()
@@ -1495,7 +1753,6 @@ shop = Shop()
 clock = pygame.time.Clock()
 key='' #Für die Inputs
 game = True
-round_timer = 60
 font = pygame.font.Font('freesansbold.ttf', 80)
 font2 = pygame.font.Font('freesansbold.ttf', 30)
 
@@ -1515,11 +1772,11 @@ while game:
                 menu.click_possible = True
 
             if menu.click_possible:
-                if menu.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos()) != None:
+                if menu.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos(), player, enemies, background, boss1, boss2) != None:
                     round_timer = 60
                     background.x=-2000
                     background.y=-2000
-                    player = Player(menu.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos()))
+                    player = Player(menu.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos(), player, enemies, background, boss1, boss2))
                     menu.stage = 0
 
             if pygame.mouse.get_pressed()[0]:
@@ -1599,13 +1856,13 @@ while game:
                 boss2.health = player.ability(key, boss2.x ,boss2.y , boss2.health)
 
             else:
-                if round_timer > 0:
-                    screen.blit(font.render(str(round_timer), True, (255,255,255)), (460,5))
+                if player.round_timer > 0:
+                    screen.blit(font.render(str(player.round_timer), True, (255,255,255)), (460,5))
 
-                if round_timer == 0:
+                if player.round_timer == 0:
                     for enemy in enemies:
                         enemy.kill()
-                    round_timer = 60
+                    player.round_timer = 60
                     player.stage += 1
                     shop.shop = True
 
@@ -1680,7 +1937,7 @@ while game:
                         enemies.add(enemy6)
 
                 if event.type == ROUND_TIMER_TICK:
-                    round_timer -= 1
+                    player.round_timer -= 1
 
                 if event.type == QUIT:
                     game = False
