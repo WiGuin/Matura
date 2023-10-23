@@ -134,50 +134,50 @@ class Player(pygame.sprite.Sprite):
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
-                    if 463<x<608 and 360<y<500:
+                    if 460<x<575 and 400<y<475:
                         gegner_leben-=int(self.inventory[0])
                 if self.face=='left':
-                    if 392<x<510 and 360<y<500:
+                    if 350<x<465 and 400<y<475:
                         gegner_leben-=int(self.inventory[0])
         if type=='2':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
-                    if 400<x<480 and 360<y<500:
+                    if 400<x<550 and 330<y<450:
                         gegner_leben-=int(self.inventory[0])
                 if self.face=='left':
-                    if 340<x<420 and 360<y<500:
+                    if 250<x<400 and 330<y<450:
                         gegner_leben-=int(self.inventory[0])
         if type=='3':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
-                    if 388<x<683 and 250<y<575:
+                    if 355<x<525 and 280<y<410:
                         gegner_leben-=int(self.inventory[0])
                 if self.face=='left':
-                    if 275<x<585 and 250<y<575:
+                    if 215<x<385 and 280<y<410:
                         gegner_leben-=int(self.inventory[0])
         if type=='4':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
-                    if 350<x<595 and 170<y<500:
+                    if 300<x<500 and 200<y<450:
                         gegner_leben-=int(self.inventory[0])
                 if self.face=='left':
-                    if 225<x<470 and 170<y<500:
+                    if 200<x<400 and 200<y<450:
                         gegner_leben-=int(self.inventory[0])
         if type=='5':
             if self.arm>=30:
                 self.arm=0
             if self.arm==0:
                 if self.face=='right':
-                    if 260<x<620 and 165<y<500:
+                    if 300<x<530 and 200<y<420:
                         gegner_leben-=int(self.inventory[0])
                 if self.face=='left':
-                    if 150<x<520 and 165<y<500:
+                    if 175<x<405 and 200<y<420:
                         gegner_leben-=int(self.inventory[0])
         return(gegner_leben)
 
@@ -1831,14 +1831,13 @@ while game:
                     boss1.walk_animation()
                     player.health = boss1.attack(player.health, player.block, int(player.inventory[1]))
                     boss1.attack_animation()
+                    if player.is_attacking:
+                        boss1.health = player.attack(boss1.x, boss1.y, boss1.health, boss1.type)
                 else:
                     time.sleep(1)
                     player.coin_count += 15
                     player.stage += 1
                     shop.shop = True
-                if player.is_attacking:
-                    boss1.health = player.attack(boss1.x, boss1.y, boss1.health, boss1.type)
-                boss1.health = player.ability(key, boss1.x ,boss1.y , boss1.health)
 
             elif player.stage == 11:
                 if boss2.health>0:
@@ -1847,13 +1846,12 @@ while game:
                     boss2.walk_animation()
                     player.health = boss2.attack(player.health, player.block, int(player.inventory[1]))
                     boss2.attack_animation()
+                    if player.is_attacking:
+                        boss2.health = player.attack(boss2.x, boss2.y, boss2.health, boss2.type)
                 else:
                     time.sleep(1)
                     menu.stage = 1
                     menu.menu = True
-                if player.is_attacking:
-                    boss2.health = player.attack(boss2.x, boss2.y, boss2.health, boss2.type)
-                boss2.health = player.ability(key, boss2.x ,boss2.y , boss2.health)
 
             else:
                 if player.round_timer > 0:
