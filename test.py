@@ -1194,6 +1194,10 @@ class Menu(pygame.sprite.Sprite):
         self.start_x = 300
         self.start_y = 450
 
+        self.tutorial = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Tutorial Button1.png')
+        self.tutorial_x = 300
+        self.tutorial_y = 600
+
         self.neues_spiel = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Neues Spiel Button1.png')
         self.neues_spiel_x = 300
         self.neues_spiel_y = 300
@@ -1230,6 +1234,7 @@ class Menu(pygame.sprite.Sprite):
     def print(self):
         if self.stage == 1:
             screen.blit(self.start, (self.start_x, self.start_y))
+            screen.blit(self.tutorial, (self.tutorial_x, self.tutorial_y))
         elif self.stage == 2:
             screen.blit(self.neues_spiel, (self.neues_spiel_x, self.neues_spiel_y))
             screen.blit(self.spiel_laden, (self.spiel_laden_x, self.spiel_laden_y))
@@ -1257,6 +1262,15 @@ class Menu(pygame.sprite.Sprite):
             else:
                 self.start = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Start Button1.png')
                 self.start_x = 300
+
+            if 300<pos[0]<700 and 600<pos[1]<700:
+                self.tutorial = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Tutorial Button2.png')
+                self.tutorial_x = 290
+                if left:
+                    self.stage = 6
+            else:
+                self.tutorial = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Tutorial Button1.png')
+                self.tutorial_x = 300
 
         elif self.stage == 2:
             if 300<pos[0]<700 and 300<pos[1]<400:
@@ -1755,6 +1769,7 @@ key='' #Für die Inputs
 game = True
 font = pygame.font.Font('freesansbold.ttf', 80)
 font2 = pygame.font.Font('freesansbold.ttf', 30)
+is_tutorial = False
 
 while game:
 
@@ -1764,6 +1779,10 @@ while game:
         menu.print()
 
         if menu.stage == 0:
+            menu.menu = False
+
+        if menu.stage == 6:
+            is_tutorial = True
             menu.menu = False
 
         for event in pygame.event.get():
@@ -1788,174 +1807,178 @@ while game:
     else:
         background.print()
 
-        if shop.shop:
-            key=''
-            shop.choice(player.inventory)
-            shop.print(player.coin_count)
+        if is_tutorial:
+            pass
 
-            for event in pygame.event.get():
-
-                if shop.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos()) != None:
-                    player.inventory[shop.type] = shop.item_number
-                    player.coin_count -= 20
-
-                    player.surf = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character'+str(player.character)+s+'character'+str(player.character)+'_'+player.inventory[0]+'_0.png')
-                    player.surf = pygame.transform.scale(player.surf, (125,125))
-                    player.shield = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Items'+s+'Schild_'+player.inventory[1]+'.png')
-                    player.shield = pygame.transform.scale(player.shield, (100,100))
-
-                if event.type == QUIT:
-                    game = False
-        
         else:
-            enemies.update(key, background.x, background.y)
+            if shop.shop:
+                key=''
+                shop.choice(player.inventory)
+                shop.print(player.coin_count)
 
-            for single_enemy in enemies:
+                for event in pygame.event.get():
 
-                player.health = single_enemy.attack(player.health, player.block, int(player.inventory[1]))
-                if player.is_attacking and player.block != True:
-                    single_enemy.health = player.attack(single_enemy.x, single_enemy.y, single_enemy.health, single_enemy.type)
-                single_enemy.health = player.ability(single_enemy.x , single_enemy.y , single_enemy.health, single_enemy.type)
+                    if shop.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos()) != None:
+                        player.inventory[shop.type] = shop.item_number
+                        player.coin_count -= 20
 
-                if single_enemy.health <= 0:
-                    player.coin_count += int(single_enemy.type)
-                    single_enemy.kill()
+                        player.surf = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character'+str(player.character)+s+'character'+str(player.character)+'_'+player.inventory[0]+'_0.png')
+                        player.surf = pygame.transform.scale(player.surf, (125,125))
+                        player.shield = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Items'+s+'Schild_'+player.inventory[1]+'.png')
+                        player.shield = pygame.transform.scale(player.shield, (100,100))
+
+                    if event.type == QUIT:
+                        game = False
             
-            if len(enemies) == 0:
-                player.ability(0,0,0,'0')
-
-            if player.stage == 6:
-                if boss1.health>0:
-                    boss1.print()
-                    boss1.walk(key, background.x, background.y)
-                    boss1.walk_animation()
-                    player.health = boss1.attack(player.health, player.block, int(player.inventory[1]))
-                    boss1.attack_animation()
-                    if player.is_attacking:
-                        boss1.health = player.attack(boss1.x, boss1.y, boss1.health, boss1.type)
-                else:
-                    time.sleep(1)
-                    player.coin_count += 15
-                    player.stage += 1
-                    shop.shop = True
-
-            elif player.stage == 11:
-                if boss2.health>0:
-                    boss2.print()
-                    boss2.walk(key, background.x, background.y)
-                    boss2.walk_animation()
-                    player.health = boss2.attack(player.health, player.block, int(player.inventory[1]))
-                    boss2.attack_animation()
-                    if player.is_attacking:
-                        boss2.health = player.attack(boss2.x, boss2.y, boss2.health, boss2.type)
-                else:
-                    time.sleep(1)
-                    menu.stage = 1
-                    menu.menu = True
-
             else:
-                if player.round_timer > 0:
-                    screen.blit(font.render(str(player.round_timer), True, (255,255,255)), (460,5))
+                enemies.update(key, background.x, background.y)
 
-                if player.round_timer == 0:
-                    for enemy in enemies:
-                        enemy.kill()
-                    player.round_timer = 60
-                    player.stage += 1
-                    shop.shop = True
+                for single_enemy in enemies:
 
-            player.print()
-            player.walk(key)
-            player.animation(key)
-            player.ability_animation(key)
-            if player.is_attacking:
-                player.arm+=1
-            else:
-                player.arm=25
-            
-            screen.blit(font2.render('Stage: '+str(player.stage), True, (255,255,255)), (460,950))
+                    player.health = single_enemy.attack(player.health, player.block, int(player.inventory[1]))
+                    if player.is_attacking and player.block != True:
+                        single_enemy.health = player.attack(single_enemy.x, single_enemy.y, single_enemy.health, single_enemy.type)
+                    single_enemy.health = player.ability(single_enemy.x , single_enemy.y , single_enemy.health, single_enemy.type)
 
-            for event in pygame.event.get():
+                    if single_enemy.health <= 0:
+                        player.coin_count += int(single_enemy.type)
+                        single_enemy.kill()
+                
+                if len(enemies) == 0:
+                    player.ability(0,0,0,'0')
 
-                if event.type == KEYDOWN:
+                if player.stage == 6:
+                    if boss1.health>0:
+                        boss1.print()
+                        boss1.walk(key, background.x, background.y)
+                        boss1.walk_animation()
+                        player.health = boss1.attack(player.health, player.block, int(player.inventory[1]))
+                        boss1.attack_animation()
+                        if player.is_attacking:
+                            boss1.health = player.attack(boss1.x, boss1.y, boss1.health, boss1.type)
+                    else:
+                        time.sleep(1)
+                        player.coin_count += 15
+                        player.stage += 1
+                        shop.shop = True
 
-                    if event.key == K_ESCAPE:
-                        menu.stage = 5
+                elif player.stage == 11:
+                    if boss2.health>0:
+                        boss2.print()
+                        boss2.walk(key, background.x, background.y)
+                        boss2.walk_animation()
+                        player.health = boss2.attack(player.health, player.block, int(player.inventory[1]))
+                        boss2.attack_animation()
+                        if player.is_attacking:
+                            boss2.health = player.attack(boss2.x, boss2.y, boss2.health, boss2.type)
+                    else:
+                        time.sleep(1)
+                        menu.stage = 1
                         menu.menu = True
 
-                    if event.key == K_w:
-                        key+='w'
-                    if event.key == K_s:
-                        key+='s'
-                    if event.key == K_a:
-                        key+='a'
-                    if event.key == K_d:
-                        key+='d'
-                    if event.key == K_q:
-                        player.ability_true += 1
-
-                if event.type == KEYUP:
-                    if event.key == K_w:
-                        key=key_not_input(key, 'w')
-                    if event.key == K_s:
-                        key=key_not_input(key, 's')
-                    if event.key == K_a:
-                        key=key_not_input(key, 'a')
-                    if event.key == K_d:
-                        key=key_not_input(key, 'd')
-
-                if event.type == SPAWN_ENEMY_1:
-                    if player.stage != 6 and player.stage != 11:
-                        enemy1 = Enemy1()
-                        enemies.add(enemy1)
-
-                if event.type == SPAWN_ENEMY_2:
-                    if player.stage != 6 and player.stage != 11:
-                        enemy2 = Enemy2()
-                        enemies.add(enemy2)
-
-                if event.type == SPAWN_ENEMY_3:
-                    if player.stage != 6 and player.stage != 11:
-                        enemy3 = Enemy3()
-                        enemies.add(enemy3)
-
-                if event.type == SPAWN_ENEMY_4:
-                    if player.stage != 6 and player.stage != 11:
-                        enemy4 = Enemy4()
-                        enemies.add(enemy4)
-
-                if event.type == SPAWN_ENEMY_5:
-                    if player.stage != 6 and player.stage != 11:
-                        enemy5 = Enemy5()
-                        enemies.add(enemy5)
-
-                if event.type == SPAWN_ENEMY_6:
-                    if player.stage != 6 and player.stage != 11:
-                        enemy6 = Enemy6()
-                        enemies.add(enemy6)
-
-                if event.type == ROUND_TIMER_TICK:
-                    player.round_timer -= 1
-
-                if event.type == QUIT:
-                    game = False
-
-                if pygame.mouse.get_pressed()[0]:
-                    player.is_attacking=True
                 else:
-                    player.is_attacking=False
+                    if player.round_timer > 0:
+                        screen.blit(font.render(str(player.round_timer), True, (255,255,255)), (460,5))
+
+                    if player.round_timer == 0:
+                        for enemy in enemies:
+                            enemy.kill()
+                        player.round_timer = 60
+                        player.stage += 1
+                        shop.shop = True
+
+                player.print()
+                player.walk(key)
+                player.animation(key)
+                player.ability_animation(key)
+                if player.is_attacking:
+                    player.arm+=1
+                else:
+                    player.arm=25
                 
-                if pygame.mouse.get_pressed()[2]:
-                    player.block = True
-                else:
-                    player.block = False
+                screen.blit(font2.render('Stage: '+str(player.stage), True, (255,255,255)), (460,950))
 
-            if player.health <= 0:
-                for enemy in enemies:
-                    enemy.kill()
-                player.health = 10
-                menu.stage = 2
-                menu.menu = True
+                for event in pygame.event.get():
+
+                    if event.type == KEYDOWN:
+
+                        if event.key == K_ESCAPE:
+                            menu.stage = 5
+                            menu.menu = True
+
+                        if event.key == K_w:
+                            key+='w'
+                        if event.key == K_s:
+                            key+='s'
+                        if event.key == K_a:
+                            key+='a'
+                        if event.key == K_d:
+                            key+='d'
+                        if event.key == K_q:
+                            player.ability_true += 1
+
+                    if event.type == KEYUP:
+                        if event.key == K_w:
+                            key=key_not_input(key, 'w')
+                        if event.key == K_s:
+                            key=key_not_input(key, 's')
+                        if event.key == K_a:
+                            key=key_not_input(key, 'a')
+                        if event.key == K_d:
+                            key=key_not_input(key, 'd')
+
+                    if event.type == SPAWN_ENEMY_1:
+                        if player.stage != 6 and player.stage != 11:
+                            enemy1 = Enemy1()
+                            enemies.add(enemy1)
+
+                    if event.type == SPAWN_ENEMY_2:
+                        if player.stage != 6 and player.stage != 11:
+                            enemy2 = Enemy2()
+                            enemies.add(enemy2)
+
+                    if event.type == SPAWN_ENEMY_3:
+                        if player.stage != 6 and player.stage != 11:
+                            enemy3 = Enemy3()
+                            enemies.add(enemy3)
+
+                    if event.type == SPAWN_ENEMY_4:
+                        if player.stage != 6 and player.stage != 11:
+                            enemy4 = Enemy4()
+                            enemies.add(enemy4)
+
+                    if event.type == SPAWN_ENEMY_5:
+                        if player.stage != 6 and player.stage != 11:
+                            enemy5 = Enemy5()
+                            enemies.add(enemy5)
+
+                    if event.type == SPAWN_ENEMY_6:
+                        if player.stage != 6 and player.stage != 11:
+                            enemy6 = Enemy6()
+                            enemies.add(enemy6)
+
+                    if event.type == ROUND_TIMER_TICK:
+                        player.round_timer -= 1
+
+                    if event.type == QUIT:
+                        game = False
+
+                    if pygame.mouse.get_pressed()[0]:
+                        player.is_attacking=True
+                    else:
+                        player.is_attacking=False
+                    
+                    if pygame.mouse.get_pressed()[2]:
+                        player.block = True
+                    else:
+                        player.block = False
+
+                if player.health <= 0:
+                    for enemy in enemies:
+                        enemy.kill()
+                    player.health = 10
+                    menu.stage = 2
+                    menu.menu = True
 
     clock.tick(30)
     pygame.display.flip()
