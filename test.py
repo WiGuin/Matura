@@ -1001,8 +1001,8 @@ class Boss1(pygame.sprite.Sprite):
         self.leg=0
         self.arm=0
         self.attack_clock=0
-        self.x=410
-        self.y=300
+        self.x=250
+        self.y=700
         self.type = '4'
     
     def print(self):
@@ -1099,22 +1099,23 @@ class Boss2(pygame.sprite.Sprite):
         self.leg=0
         self.arm=0
         self.attack_clock=0
-        self.x=365
-        self.y=290
+        self.x=750
+        self.y=300
         self.type = '5'
     
     def print(self):
         screen.blit(self.surf, (self.x,self.y))
 
     def walk(self, key, x, y):
-        if 10<self.x<365 or 720<self.x:
+        if 410<self.x:
             self.x-=2
-        if 365<self.x<990 or self.x<0:
+        if self.x<410:
             self.x+=2
-        if 10<self.y<290:
+        if 400<self.y:
             self.y-=2
-        if 290<self.y<710:
+        if self.y<400:
             self.y+=2
+
         if key=='a' or key=='aws' or key=='asw' or key=='was' or key=='wsa' or key=='saw' or key=='swa':
             if x<0:
                 self.x+=10
@@ -1727,6 +1728,26 @@ class Shop(pygame.sprite.Sprite):
                 self.item_number = str(int(inventory[self.type])+1)
             self.choice_cooldown = True
 
+class Tutorial(pygame.sprite.Sprite):
+    def __init__(self):
+        self.tutorial = False
+        self.stage = 1
+        self.text = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Tutorial Text'+str(self.stage)+'.png')
+        self.show = True
+        self.timer = 0
+        self.timer_start = False
+
+    def print(self):
+        screen.blit(self.text, (200, 100))
+
+    def change_text(self):
+        if self.stage < 11:
+            self.text = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Tutorial Text'+str(self.stage)+'.png')
+    
+    def timer_tick(self):
+        if self.timer_start:
+            self.timer += 1
+
 
 SPAWN_ENEMY_1 = pygame.USEREVENT + 1
 pygame.time.set_timer(SPAWN_ENEMY_1, 5000)
@@ -1769,7 +1790,7 @@ key='' #Für die Inputs
 game = True
 font = pygame.font.Font('freesansbold.ttf', 80)
 font2 = pygame.font.Font('freesansbold.ttf', 30)
-is_tutorial = False
+tutorial = Tutorial()
 
 while game:
 
@@ -1782,7 +1803,7 @@ while game:
             menu.menu = False
 
         if menu.stage == 6:
-            is_tutorial = True
+            tutorial.tutorial = True
             menu.menu = False
 
         for event in pygame.event.get():
@@ -1807,9 +1828,154 @@ while game:
     else:
         background.print()
 
-        if is_tutorial:
-            pass
+        if tutorial.tutorial:
 
+            player.print()
+            player.walk(key)
+            player.animation(key)
+            if player.is_attacking:
+                player.arm+=1
+            else:
+                player.arm=25
+
+            if tutorial.stage == 4:
+                player.health = enemy1.attack(player.health, player.block, int(player.inventory[1]))
+                if player.is_attacking and player.block != True:
+                    enemy1.health = player.attack(enemy1.x, enemy1.y, enemy1.health, enemy1.type)
+
+                if enemy1.health <= 0:
+                    player.coin_count = 21
+                    enemy1.kill()
+                    tutorial.stage += 1
+                    tutorial.change_text()
+                    tutorial.timer_start = True
+                else:
+                    enemy1.update(key, background.x, background.y)
+                
+                if player.health <= 0:
+                    player.health = 10
+                    enemy1 = Enemy1()
+
+            elif tutorial.stage == 6:
+                tutorial.timer_start = True
+                shop.shop = True
+                shop.type = 0
+                shop.item = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Items'+s+'Schwert '+str(int(player.inventory[shop.type])+1)+'.png')
+                shop.item = pygame.transform.scale(shop.item, (43,200))
+                shop.item_number = str(int(player.inventory[shop.type])+1)
+                shop.print(player.coin_count)
+
+            elif tutorial.stage == 7:
+                shop.print(player.coin_count)
+
+            elif tutorial.stage == 8:
+                shop.print(player.coin_count)
+                if shop.shop == False:
+                    tutorial.stage += 1
+                    tutorial.change_text()
+
+            elif tutorial.stage == 9:
+                boss2.print()
+                boss2.walk(key, background.x, background.y)
+                boss2.walk_animation()
+                player.health = boss2.attack(player.health, player.block, int(player.inventory[1]))
+                boss2.attack_animation()
+                player.attack(boss2.x, boss2.y, boss2.health, boss2.type)
+                if player.health <= 0:
+                    tutorial.stage += 1
+                    tutorial.change_text()
+            
+            elif tutorial.stage == 10:
+                boss2.print()
+                tutorial.timer_start = True
+            
+            elif tutorial.stage == 11:
+                tutorial.tutorial = False
+                menu.stage = 1
+                menu.menu = True
+
+            if tutorial.show:
+                tutorial.print()
+            tutorial.timer_tick()
+
+
+            if tutorial.timer >= 250:
+                tutorial.timer_start = False
+                tutorial.timer = 0
+                tutorial.stage += 1
+                tutorial.change_text()
+                tutorial.show =  True
+
+
+            for event in pygame.event.get():
+
+                if event.type == KEYDOWN:
+
+                    if tutorial.stage == 1:
+                        tutorial.stage += 1
+                        tutorial.change_text()
+
+                    elif tutorial.stage == 2 or tutorial.stage == 4 or tutorial.stage == 9:
+
+                        if event.key == K_w:
+                            key+='w'
+                        if event.key == K_s:
+                            key+='s'
+                        if event.key == K_a:
+                            key+='a'
+                        if event.key == K_d:
+                            key+='d'
+                        if event.key == K_q:
+                            player.ability_true += 1
+
+                    elif tutorial.stage == 3:
+                        tutorial.show =  False
+                        tutorial.timer_start = True
+
+                    if tutorial.stage == 2:
+                        tutorial.timer_start = True
+
+                if tutorial.stage == 3 or tutorial.stage == 4 or tutorial.stage == 9:
+                    if pygame.mouse.get_pressed()[0]:
+                        player.is_attacking=True
+                    else:
+                        player.is_attacking=False
+                                
+                    if pygame.mouse.get_pressed()[2]:
+                        player.block = True
+                    else:
+                        player.block = False
+                else:
+                    player.is_attacking=False
+                    player.block = False
+
+                if tutorial.stage == 7 or tutorial.stage == 8:
+                    if shop.button(pygame.mouse.get_pressed()[0], pygame.mouse.get_pos()) != None:
+                        player.inventory[shop.type] = shop.item_number
+                        player.coin_count -= 20
+
+                        player.surf = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Character'+str(player.character)+s+'character'+str(player.character)+'_'+player.inventory[0]+'_0.png')
+                        player.surf = pygame.transform.scale(player.surf, (125,125))
+                        player.shield = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Items'+s+'Schild_'+player.inventory[1]+'.png')
+                        player.shield = pygame.transform.scale(player.shield, (100,100))
+
+                        tutorial.stage += 1
+                        tutorial.change_text()
+
+                if event.type == KEYUP:
+                    if event.key == K_w:
+                        key=key_not_input(key, 'w')
+                    if event.key == K_s:
+                        key=key_not_input(key, 's')
+                    if event.key == K_a:
+                        key=key_not_input(key, 'a')
+                    if event.key == K_d:
+                        key=key_not_input(key, 'd')
+
+
+                if event.type == QUIT:
+                    game = False
+        
         else:
             if shop.shop:
                 key=''
