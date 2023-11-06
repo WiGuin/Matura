@@ -1716,9 +1716,9 @@ class Shop(pygame.sprite.Sprite):
     def choice(self, inventory):
         if self.choice_cooldown == False:
             self.type = random.randint(0, 1)
-            if inventory[0] == 5:
+            if inventory[0] == '5':
                 self.type = 1
-            elif inventory[1] == 5:
+            elif inventory[1] == '5':
                 self.type = 0
             if self.type == 0:
                 self.item = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Items'+s+'Schwert '+str(int(inventory[self.type])+1)+'.png')
