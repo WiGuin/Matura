@@ -401,7 +401,7 @@ class Enemy1(pygame.sprite.Sprite):
                 self.arm=0
                 if block and (1-shield) >= 0:
                     player_health-=(1-shield)
-                else:
+                elif block != True:
                     player_health-=1
             self.arm+=1
         else:
@@ -506,7 +506,7 @@ class Enemy2(pygame.sprite.Sprite):
                 self.arm=0
                 if block and (1-shield) >= 0:
                     player_health-=(1-shield)
-                else:
+                elif block != True:
                     player_health-=1
             self.arm+=1
         else:
@@ -638,7 +638,7 @@ class Enemy3(pygame.sprite.Sprite):
             if self.arm==50:
                 if block and (2-shield) >= 0:
                     player_health-=(2-shield)
-                else:
+                elif block != True:
                     player_health-=2
             self.arm+=1
         else:
@@ -745,7 +745,7 @@ class Enemy4(pygame.sprite.Sprite):
             if self.arm==50:
                 if block and (2-shield) >= 0:
                     player_health-=(2-shield)
-                else:
+                elif block != True:
                     player_health-=2
             self.arm+=1
         else:
@@ -853,7 +853,7 @@ class Enemy5(pygame.sprite.Sprite):
                 self.arm=0
                 if block and (3-shield) >= 0:
                     player_health-=(3-shield)
-                else:
+                elif block != True:
                     player_health-=3
             self.arm+=1
         else:
@@ -965,7 +965,7 @@ class Enemy6(pygame.sprite.Sprite):
             if self.arm == 50:
                 if block and (3-shield) >= 0:
                     player_health-=(3-shield)
-                else:
+                elif block != True:
                     player_health-=3
             self.arm+=1
         else:
@@ -1075,7 +1075,7 @@ class Boss1(pygame.sprite.Sprite):
                 self.arm=0
                 if block and (2-shield) >= 0:
                     player_health-=(2-shield)
-                else:
+                elif block != True:
                     player_health-=2
             self.arm+=1
         else:
@@ -1163,12 +1163,12 @@ class Boss2(pygame.sprite.Sprite):
             if self.arm == 55:
                 if block and (2-shield) >= 0:
                     player_health-=(2-shield)
-                else:
+                elif block != True:
                     player_health-=2
             elif self.arm == 60:
                 if block and (2-shield) >= 0:
                     player_health-=(2-shield)
-                else:
+                elif block != True:
                     player_health-=2
             elif self.arm >= 65:
                 self.arm = 0
@@ -1684,6 +1684,8 @@ class Shop(pygame.sprite.Sprite):
         if 388 < pos[0] < 611 and 681 < pos[1] < 749:
             self.surf = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Shop'+s+'Shop_0_1.png')
             if left:
+                self.bought = False
+                self.choice_cooldown = False
                 self.shop = False
 
         elif 365 < pos[0] < 635 and 333 < pos[1] < 588:
@@ -1979,6 +1981,7 @@ while game:
         else:
             if shop.shop:
                 key=''
+                player.health = 10
                 shop.choice(player.inventory)
                 shop.print(player.coin_count)
 
