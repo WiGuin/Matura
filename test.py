@@ -259,6 +259,14 @@ class Player(pygame.sprite.Sprite):
                         if 0 < (self.ability_x-x) < 150 and -100<(self.ability_y-y):
                             enemy_health-=1
                             self.ability_cooldown += 1
+                    elif enemy_type == '4':
+                        if self.ability_x - 300 < x < self.ability_x + 50 and self.ability_y - 300 < y < self.ability_y + 50:
+                            enemy_health-=1
+                            self.ability_cooldown += 1
+                    elif enemy_type == '5':
+                        if self.ability_x - 300 < x < self.ability_x + 50 and self.ability_y - 300 < y < self.ability_y + 50:
+                            enemy_health-=1
+                            self.ability_cooldown += 1
 
             if self.ability_true >= 70:
                 self.ability_x = 500
@@ -420,6 +428,8 @@ class Enemy1(pygame.sprite.Sprite):
                 self.surf=pygame.transform.flip(self.surf, True, False)
             self.surf=pygame.transform.scale(self.surf, (75,75))
             self.attack_clock+=1
+        else:
+            self.attack_clock = 0
 
     def update(self, key, x, y):
         self.print()
@@ -551,7 +561,8 @@ class Enemy2(pygame.sprite.Sprite):
 
             self.surf=pygame.transform.scale(self.surf, (75,75))
             self.attack_clock+=1
-
+        else:
+            self.attack_clock = 0
     def update(self, key, x, y):
         self.print()
         self.walk(key, x, y)
@@ -579,7 +590,7 @@ class Enemy3(pygame.sprite.Sprite):
             self.x+=4
         if 350<self.x:
             self.x-=4
-        if 440>self.y:
+        if 400>self.y:
             self.y+=4
         if 510<self.y:
             self.y-=4
@@ -632,7 +643,7 @@ class Enemy3(pygame.sprite.Sprite):
         self.leg+=1
 
     def attack(self, player_health, block, shield):
-        if 490>self.x and self.x>340 and 510>self.y and self.y>440:
+        if 490>self.x and self.x>340 and 510>self.y and self.y>400:
             if self.arm>=60:
                 self.arm=0
             if self.arm==50:
@@ -646,7 +657,7 @@ class Enemy3(pygame.sprite.Sprite):
         return(player_health)
         
     def attack_animation(self):
-        if 490>self.x and self.x>340 and 510>self.y and self.y>440:
+        if 490>self.x and self.x>340 and 510>self.y and self.y>400:
             if self.attack_clock>=60:
                 self.attack_clock=0
             if self.attack_clock < 10:
@@ -658,6 +669,8 @@ class Enemy3(pygame.sprite.Sprite):
             if self.face=='left':
                 self.surf=pygame.transform.flip(self.surf, True, False)
             self.attack_clock+=1
+        else:
+            self.attack_clock = 0
 
     def update(self, key, x, y):
         self.print()
@@ -686,7 +699,7 @@ class Enemy4(pygame.sprite.Sprite):
             self.x+=4
         if 350<self.x:
             self.x-=4
-        if 440>self.y:
+        if 400>self.y:
             self.y+=4
         if 510<self.y:
             self.y-=4
@@ -739,7 +752,7 @@ class Enemy4(pygame.sprite.Sprite):
         self.leg+=1
 
     def attack(self, player_health, block, shield):
-        if 490>self.x and self.x>340 and 510>self.y and self.y>440:
+        if 490>self.x and self.x>340 and 510>self.y and self.y>400:
             if self.arm>=60:
                 self.arm=0
             if self.arm==50:
@@ -753,7 +766,7 @@ class Enemy4(pygame.sprite.Sprite):
         return(player_health)
         
     def attack_animation(self):
-        if 490>self.x and self.x>340 and 510>self.y and self.y>440:
+        if 490>self.x and self.x>340 and 510>self.y and self.y>400:
             if self.attack_clock>=60:
                 self.attack_clock=0
             if self.attack_clock < 10:
@@ -765,6 +778,8 @@ class Enemy4(pygame.sprite.Sprite):
             if self.face=='left':
                 self.surf=pygame.transform.flip(self.surf, True, False)
             self.attack_clock+=1
+        else:
+            self.attack_clock = 0
 
     def update(self, key, x, y):
         self.print()
@@ -794,7 +809,7 @@ class Enemy5(pygame.sprite.Sprite):
             self.x+=3
         if 290<self.x:
             self.x-=3
-        if 455>self.y:
+        if 355>self.y:
             self.y+=3
         if 500<self.y:
             self.y-=3
@@ -848,7 +863,7 @@ class Enemy5(pygame.sprite.Sprite):
         self.leg+=1
 
     def attack(self, player_health, block, shield):
-        if 505>self.x and self.x>280 and 500>self.y and self.y>455:
+        if 505>self.x and self.x>280 and 500>self.y and self.y>355:
             if self.arm>=60:
                 self.arm=0
                 if block and (3-shield) >= 0:
@@ -861,7 +876,7 @@ class Enemy5(pygame.sprite.Sprite):
         return(player_health)
         
     def attack_animation(self):
-        if 505>self.x and self.x>280 and 500>self.y and self.y>455:
+        if 505>self.x and self.x>280 and 500>self.y and self.y>355:
             if self.attack_clock>=60:
                 self.attack_clock=0
             if self.attack_clock < 10:
@@ -876,6 +891,8 @@ class Enemy5(pygame.sprite.Sprite):
                 self.surf=pygame.transform.flip(self.surf, True, False)
             self.surf=pygame.transform.scale(self.surf, (267,267))
             self.attack_clock+=1
+        else:
+            self.attack_clock = 0
 
     def update(self, key, x, y):
         self.print()
@@ -905,7 +922,7 @@ class Enemy6(pygame.sprite.Sprite):
             self.x+=3
         if 290<self.x:
             self.x-=3
-        if 455>self.y:
+        if 355>self.y:
             self.y+=3
         if 500<self.y:
             self.y-=3
@@ -959,7 +976,7 @@ class Enemy6(pygame.sprite.Sprite):
         self.leg+=1
 
     def attack(self, player_health, block, shield):
-        if 505>self.x and self.x>280 and 500>self.y and self.y>455:
+        if 505>self.x and self.x>280 and 500>self.y and self.y>355:
             if self.arm>=60:
                 self.arm=0
             if self.arm == 50:
@@ -973,7 +990,7 @@ class Enemy6(pygame.sprite.Sprite):
         return(player_health)
         
     def attack_animation(self):
-        if 505>self.x and self.x>280 and 500>self.y and self.y>455:
+        if 505>self.x and self.x>280 and 500>self.y and self.y>355:
             if self.attack_clock>=60:
                 self.attack_clock=0
             if self.attack_clock < 10:
@@ -986,6 +1003,8 @@ class Enemy6(pygame.sprite.Sprite):
                 self.surf=pygame.transform.flip(self.surf, True, False)
             self.surf=pygame.transform.scale(self.surf, (267,267))
             self.attack_clock+=1
+        else:
+            self.attack_clock = 0
 
     def update(self, key, x, y):
         self.print()
@@ -1219,6 +1238,12 @@ class Menu(pygame.sprite.Sprite):
         self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button1.png')
         self.stand2_x = 541
         self.stand2_y = 25
+        self.kopf1_x = 180
+        self.kopf1_y = 175
+        self.kopf2_x = 690
+        self.kopf2_y = 175
+        self.kopf_char1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter1_Kopf.png')
+        self.kopf_char2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Charakter2_Kopf.png')
 
         self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button1.png')
         self.zurück_x = 300
@@ -1248,6 +1273,28 @@ class Menu(pygame.sprite.Sprite):
             screen.blit(self.stand1, (self.stand1_x, self.stand1_y))
             screen.blit(self.stand2, (self.stand2_x, self.stand2_y))
             screen.blit(self.zurück, (self.zurück_x, self.zurück_y))
+            save1 = open("Save1.txt","r")
+            if save1.read() != '':
+                save1.close()
+                save1 = open("Save1.txt","r")
+                if str(save1.readlines()[0][0]) == '1':
+                    screen.blit(self.kopf_char1, (self.kopf1_x, self.kopf1_y))
+                save1.close()
+                save1 = open("Save1.txt","r")
+                if str(save1.readlines()[0][0]) == '2':
+                    screen.blit(self.kopf_char2, (self.kopf1_x, self.kopf1_y))
+                save1.close()
+            save2 = open("Save2.txt","r")
+            if save2.read() != '':
+                save2.close()
+                save2 = open("Save2.txt","r")
+                if str(save2.readlines()[0][0]) == '1':
+                    screen.blit(self.kopf_char1, (self.kopf2_x, self.kopf2_y))
+                save2.close()
+                save2 = open("Save2.txt","r")
+                if str(save2.readlines()[0][0]) == '2':
+                    screen.blit(self.kopf_char2, (self.kopf2_x, self.kopf2_y))
+                save2.close()
         elif self.stage == 5:
             screen.blit(self.speichern, (self.speichern_x, self.speichern_y))
             screen.blit(self.speichern_verlassen, (self.speichern_verlassen_x, self.speichern_verlassen_y))
@@ -1333,6 +1380,8 @@ class Menu(pygame.sprite.Sprite):
             if 30<pos[0]<464 and 25<pos[1]<459:
                 self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button2.png')
                 self.stand1_x = 2
+                self.kopf1_x = 152
+                self.kopf1_y = 203
                 if left:
                     save1 = open("Save1.txt","r")
                     if save1.read() != '':
@@ -1435,10 +1484,14 @@ class Menu(pygame.sprite.Sprite):
             else:
                 self.stand1 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand1 Button1.png')
                 self.stand1_x = 30
+                self.kopf1_x = 180
+                self.kopf1_y = 175
             
             if 541<pos[0]<975 and 25<pos[1]<459:
                 self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button2.png')
                 self.stand2_x = 513
+                self.kopf2_x = 662
+                self.kopf2_y = 203
                 if left:
                     save2 = open("Save2.txt","r")
                     if save2.read() != '':
@@ -1541,6 +1594,8 @@ class Menu(pygame.sprite.Sprite):
             else:
                 self.stand2 = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Spielstand2 Button1.png')
                 self.stand2_x = 541
+                self.kopf2_x = 690
+                self.kopf2_y = 175
             
             if 300<pos[0]<700 and 740<pos[1]<840:
                 self.zurück = pygame.image.load(os.path.dirname(__file__)+s+'textures'+s+'Menütexturen'+s+'Zurück Button2.png')
@@ -2016,7 +2071,7 @@ while game:
                 if len(enemies) == 0:
                     player.ability(0,0,0,'0')
 
-                if player.stage == 6:
+                if player.stage == 5:
                     if boss1.health>0:
                         boss1.print()
                         boss1.walk(key, background.x, background.y)
@@ -2025,13 +2080,15 @@ while game:
                         boss1.attack_animation()
                         if player.is_attacking:
                             boss1.health = player.attack(boss1.x, boss1.y, boss1.health, boss1.type)
+                        boss1.health = player.ability(boss1.x , boss1.y , boss1.health, boss1.type)
                     else:
                         time.sleep(1)
+                        player.round_timer = 60
                         player.coin_count += 15
                         player.stage += 1
                         shop.shop = True
 
-                elif player.stage == 11:
+                elif player.stage == 9:
                     if boss2.health>0:
                         boss2.print()
                         boss2.walk(key, background.x, background.y)
@@ -2040,6 +2097,7 @@ while game:
                         boss2.attack_animation()
                         if player.is_attacking:
                             boss2.health = player.attack(boss2.x, boss2.y, boss2.health, boss2.type)
+                        boss2.health = player.ability(boss2.x , boss2.y , boss2.health, boss2.type)
                     else:
                         time.sleep(1)
                         menu.stage = 1
@@ -2097,32 +2155,32 @@ while game:
                             key=key_not_input(key, 'd')
 
                     if event.type == SPAWN_ENEMY_1:
-                        if player.stage != 6 and player.stage != 11:
+                        if player.stage != 5 and player.stage != 9:
                             enemy1 = Enemy1()
                             enemies.add(enemy1)
 
                     if event.type == SPAWN_ENEMY_2:
-                        if player.stage != 6 and player.stage != 11:
+                        if player.stage != 5 and player.stage != 9:
                             enemy2 = Enemy2()
                             enemies.add(enemy2)
 
                     if event.type == SPAWN_ENEMY_3:
-                        if player.stage != 6 and player.stage != 11:
+                        if player.stage != 5 and player.stage != 9:
                             enemy3 = Enemy3()
                             enemies.add(enemy3)
 
                     if event.type == SPAWN_ENEMY_4:
-                        if player.stage != 6 and player.stage != 11:
+                        if player.stage != 5 and player.stage != 9:
                             enemy4 = Enemy4()
                             enemies.add(enemy4)
 
                     if event.type == SPAWN_ENEMY_5:
-                        if player.stage != 6 and player.stage != 11:
+                        if player.stage != 5 and player.stage != 9:
                             enemy5 = Enemy5()
                             enemies.add(enemy5)
 
                     if event.type == SPAWN_ENEMY_6:
-                        if player.stage != 6 and player.stage != 11:
+                        if player.stage != 5 and player.stage != 9:
                             enemy6 = Enemy6()
                             enemies.add(enemy6)
 
